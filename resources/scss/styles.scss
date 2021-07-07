@@ -1,0 +1,21 @@
+/* FONTS */
+@import url("https://fonts.googleapis.com/css?family=Lato|Roboto+Slab:100,300,400,700");
+
+/* Components */
+@import "../../vendor/twbs/bootstrap/scss/bootstrap";
+@import "../../vendor/components/font-awesome/scss/fontawesome.scss";
+@import "../../vendor/components/font-awesome/scss/brands.scss";
+@import "../../vendor/components/font-awesome/scss/regular.scss";
+@import "../../vendor/components/font-awesome/scss/solid.scss";
+@import "../../vendor/components/font-awesome/scss/v4-shims.scss";
+
+
+
+main {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
