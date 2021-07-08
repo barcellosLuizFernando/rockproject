@@ -19,7 +19,8 @@ Route::get('/', [DashboardController::class, 'show'])->middleware('auth');
 Route::get('/periodsheet', [PeriodsheetController::class, 'show'])->middleware('auth');
 Route::get('/periodsheet/create', [PeriodsheetController::class, 'create'])->middleware('auth');
 Route::get('/manageperiod', [PeriodsheetController::class, 'show'])->middleware('auth');
-Route::get('/periodreport', [PeriodsheetController::class, 'show'])->middleware('auth');
+Route::get('/periodsheet/report', [PeriodsheetController::class, 'showperiods'])->middleware('auth');
+Route::get('/periodsheet/report/{year}/{month}', [PeriodsheetController::class, 'showperiod'])->middleware('auth');
 Route::get('/mailable', [PeriodsheetController::class, 'mailable'])->middleware('auth');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

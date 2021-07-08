@@ -28,46 +28,51 @@
 <body class="">
 
     <main>
-        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 200px">
+        <nav class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark min-vh-100" style="width: 200px">
+
 
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <img src="/img/logo_grande_home_topo.png" alt="logorock">
+                <img src="/img/RockIngleses_white.svg" alt="logorock">
             </a>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item"><a href="/" class="nav-link text-white @if(session('page') == '/') active @endif" aria-current="page">Home</a></li>
-                <li class="nav-item"><a href="/periodsheet" class="nav-link text-white @if(session('page') == 'periodsheet') active @endif">Registrar Ponto</a></li>
-                <li class="nav-item"><a href="/manageperiod" class="nav-link disabled">Ajustar Ponto</a></li>
-                <li class="nav-item"><a href="/#" class="nav-link disabled">Cadastro</a></li>
-                <li class="nav-item"><a href="/periodreport" class="nav-link text-white @if(session('page') == 'periodreport') active @endif">Relatório</a></li>
-
-            </ul>
-            <hr>
-            <div class="dropdown">
-                <a href="/#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="true"
-                    id="dropDownUser">
-                    <img src="{{auth()->user()->profile_photo_url}}" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong>{{ ucfirst(strtolower(strtok(auth()->user()->name, " "))) }}</strong>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark text-small shadow"
-                    aria-labelledby="dropDownUser"
-                    data-popper-placement="top-start"
-                    style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate(0px, -34px);">
-                    <li><a href="/user/profile" class="dropdown-item"><i class="fas fa-users-cog"></i> Perfil</a></li>
-                    <li><form action="/logout" method="POST">
-                        @csrf
-                        <a href="/logout"
-                            class="dropdown-item"
-                            onclick="event.preventDefault();
-                            this.closest('form').submit();"><i class="fas fa-sign-out-alt"></i> Sair</a>
-                    </form></li>
+            
+            <br>
+            <div class="" id="navbarSupportedContent">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item"><a href="/" class="nav-link text-white @if (session('page')=='/' ) active @endif"
+                            aria-current="page">Home</a></li>
+                    <li class="nav-item"><a href="/periodsheet" class="nav-link text-white @if (session('page')=='periodsheet' ) active @endif">Registrar
+                            Ponto</a></li>
+                    <li class="nav-item"><a href="/manageperiod" class="nav-link disabled">Ajustar Ponto</a></li>
+                    <li class="nav-item"><a href="/#" class="nav-link disabled">Cadastro</a></li>
+                    <li class="nav-item"><a href="/periodsheet/report" class="nav-link text-white @if (session('page')=='periodreport' ) active @endif">Relatório</a></li>
 
                 </ul>
+                <hr>
+                <div class="dropdown">
+                    <a href="/#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="true" id="dropDownUser">
+                        <img src="{{ auth()->user()->profile_photo_url }}" alt="" width="32" height="32"
+                            class="rounded-circle me-2">
+                        <strong>{{ ucfirst(strtolower(strtok(auth()->user()->name, ' '))) }}</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropDownUser"
+                        data-popper-placement="top-start"
+                        style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate(0px, -34px);">
+                        <li><a href="/user/profile" class="dropdown-item"><i class="fas fa-users-cog"></i> Perfil</a>
+                        </li>
+                        <li>
+                            <form action="/logout" method="POST">
+                                @csrf
+                                <a href="/logout" class="dropdown-item" onclick="event.preventDefault();
+                            this.closest('form').submit();"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                            </form>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
 
-        </div>
+        </nav>
 
         @yield('content')
 

@@ -186,7 +186,7 @@
                         <div class="u-row"
                             style="Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #00438a!important;">
                             <div style="padding-top: 30px; padding-bottom: 30px;">
-                                <img class="img-center" src={{ $message->embed(base_path("public/img/logo_grande_home_topo.png"))}} alt="LogoRock">
+                                <img class="img-center" src={{ $message->embed(base_path("public/img/RockIngleses_white.png"))}} alt="LogoRock">
                             </div>
                         </div>
                         <div class="u-row"
