@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [DashboardController::class, 'show'])->middleware('auth');
 Route::get('/periodsheet', [PeriodsheetController::class, 'show'])->middleware('auth');
 Route::get('/periodsheet/create', [PeriodsheetController::class, 'create'])->middleware('auth');
+Route::get('/periodsheet/createmobile', [PeriodsheetController::class, 'createmobile'])->middleware('auth');
+Route::get('/periodsheet/mobile', [PeriodsheetController::class, 'mobile'])->middleware('auth');
 Route::get('/manageperiod', [PeriodsheetController::class, 'show'])->middleware('auth');
 Route::get('/periodsheet/report', [PeriodsheetController::class, 'showperiods'])->middleware('auth');
 Route::get('/periodsheet/report/{year}/{month}', [PeriodsheetController::class, 'showperiod'])->middleware('auth');
