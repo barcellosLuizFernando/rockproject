@@ -12,18 +12,18 @@ const mix = require('laravel-mix');
  */
 
 mix
+    .autoload({jquery: ['$', 'jQuery', 'window.jQuery']})
     .js('resources/js/app.js', 'public/js')
+    .js('node_modules/jquery/dist/jquery.js', 'public/js/jQuery.js')
+    .js('node_modules/inputmask/dist/jquery.inputmask.js', 'public/js/inputmask.js')
+    .js('node_modules/inputmask/dist/bindings/inputmask.binding.js', 'public/js/inputmask.binding.js')
+    .js('vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js', 'public/js/bootstrap.js').sourceMaps()
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
-    ])
+    ]);
 
-    .sass('resources/scss/styles.scss', 'public/css/styles.css')
-
-    
-    .scripts('node_modules/jquery/dist/jquery.js', 'public/js/jQuery.js')
-    .scripts('vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js', 'public/js/bootstrap.js')
-    .scripts('vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js.map', 'public/js/bootstrap.bundle.js.map');
+mix.sass('resources/scss/styles.scss', 'public/css');
 
 if (mix.inProduction()) {
     mix.version();

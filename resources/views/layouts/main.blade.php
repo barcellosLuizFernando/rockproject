@@ -34,7 +34,7 @@
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                 <img src="/img/RockIngleses_white.svg" alt="logorock">
             </a>
-            
+
             <br>
             <div class="" id="navbarSupportedContent">
                 <ul class="nav nav-pills flex-column mb-auto">
@@ -43,7 +43,7 @@
                     <li class="nav-item"><a href="/periodsheet" class="nav-link text-white @if (session('page')=='periodsheet' ) active @endif">Registrar
                             Ponto</a></li>
                     <li class="nav-item"><a href="/manageperiod" class="nav-link disabled">Ajustar Ponto</a></li>
-                    <li class="nav-item"><a href="/#" class="nav-link disabled">Cadastro</a></li>
+                    <li class="nav-item"><a href="/employee" class="nav-link text-white @if (session('page')=='employee' ) active @endif">Cadastro</a></li>
                     <li class="nav-item"><a href="/periodsheet/report" class="nav-link text-white @if (session('page')=='periodreport' ) active @endif">Relatório</a></li>
 
                 </ul>
@@ -81,6 +81,8 @@
 
 
     <script src="/js/jQuery.js"></script>
+    <script src="/js/inputmask.js"></script>
+    <script src="/js/inputmask.binding.js"></script>
     <script src="/js/bootstrap.js"></script>
 
     @yield('bodyscript')

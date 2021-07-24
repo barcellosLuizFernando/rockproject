@@ -5,7 +5,8 @@
         </x-slot>
 
         <div class="mb-4 text-sm text-gray-600">
-            {{ __('Esqueceu sua senha? Tudo bem. Apenas nos diga o seu endereço de e-mail. Nós iremos lhe enviar um link para resetar sua senha.') }}
+            {{ __('Esqueceu sua senha? Sem problemas, apenas nos informe seu endereço de e-mail. Nós iremos lhe enviar uma mensagem com um link pra realizar o reset. Você poderá criar uma nova senha.') }}
+            
         </div>
 
         @if (session('status'))
@@ -26,7 +27,7 @@
 
             <div class="flex items-center justify-end mt-4">
                 <x-jet-button>
-                    {{ __('Enviar link por Email') }}
+                    {{ __('Enviar e-mail de reset de senha') }}
                 </x-jet-button>
             </div>
         </form>

@@ -9,7 +9,6 @@ class DashboardController extends Controller
     public function show()
     {
         session(['page' => '/']);
-        return view('dashboard', ['user' => auth()->user()]);
-
+        return view('dashboard-new', ['user' => auth()->user()]);
     }
 }

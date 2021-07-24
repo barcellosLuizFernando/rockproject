@@ -1,4 +1,4 @@
-// require('./js/bootstrap');
+require('./bootstrap');
 
 import Alpine from 'alpinejs';
 

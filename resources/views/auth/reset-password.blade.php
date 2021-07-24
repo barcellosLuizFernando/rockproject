@@ -22,13 +22,13 @@
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="password_confirmation" value="{{ __('Confirme a senha') }}" />
+                <x-jet-label for="password_confirmation" value="{{ __('Confirmação de senha') }}" />
                 <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             </div>
 
             <div class="flex items-center justify-end mt-4">
                 <x-jet-button>
-                    {{ __('Redefinir Senha') }}
+                    {{ __('Alterar senha') }}
                 </x-jet-button>
             </div>
         </form>

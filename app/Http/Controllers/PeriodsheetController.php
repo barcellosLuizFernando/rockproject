@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\TimeSheetLog;
 use App\Models\Periodsheet;
-use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use PhpParser\Node\Expr\Cast\Object_;
 use stdClass;
 
 class PeriodsheetController extends Controller
@@ -193,11 +191,26 @@ class PeriodsheetController extends Controller
         return view('periodsheet.report.show', ['years' => $years]);
     }
 
+
     public function showPeriod($year, $month)
     {
 
+        $idUser = auth()->user()->id;
+        return $this->getPeriod($year, $month, $idUser);
+    }
+
+    public function showPeriodAdm($year, $month, $idUser)
+    {
+
+        return $this->getPeriod($year, $month, $idUser);
+
+    }
+
+    private function getPeriod($year, $month, $idUser)
+    {
+
         $timesheets = Periodsheet::with('user')
-            ->where('idUser', auth()->user()->id)
+            ->where('idUser', $idUser)
             ->where(Periodsheet::raw('YEAR(datetime)'), $year)
             ->where(Periodsheet::raw('MONTH(datetime)'), $month)
             ->orderBy('datetime', 'ASC')
@@ -215,7 +228,7 @@ class PeriodsheetController extends Controller
             $object = new stdClass();
             $object->day = $day;
             setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-            $object->dayName = strftime("%A", strtotime($month . "/" . $i . "/" . $year ));
+            $object->dayName = strftime("%A", strtotime($month . "/" . $i . "/" . $year));
             $object->sheets = [];
             $sheets = new stdClass();
 
@@ -225,6 +238,7 @@ class PeriodsheetController extends Controller
             $results = count($timesheets);
             $hasEntry = false;
             $hasTrouble = false;
+            $endOfDay = false;
 
 
             foreach ($timesheets as $timesheet) {
@@ -243,13 +257,14 @@ class PeriodsheetController extends Controller
                             'hasTrouble' => $hasTrouble
                         ]);
                         $hasTrouble = true;
+                        $hasEntry = true;
                     }
 
                     array_push($sheet, [
                         'flow' => $flow,
                         'data' => $timesheet->datetime,
                         'adjusted' => $timesheet->adjusted ? "Ajustado" : "Original"
-                        
+
                     ]);
 
 
@@ -259,7 +274,7 @@ class PeriodsheetController extends Controller
                      * 2. For um movimento de saída
                      * 3. For um movimento igual ao movimento anterior
                      */
-                    if ($i <= 0 || $timesheet->flow == 1 || $lastflow == $flow) {
+                    if ($i <= 0 || $timesheet->flow == 1 || ($lastflow == $flow && $lastflow != null)) {
 
                         if ($hasEntry && $lastflow == $flow) {
                             array_push($sheet, [
@@ -277,7 +292,22 @@ class PeriodsheetController extends Controller
                         $hasTrouble = false;
                     }
                     $lastflow = $flow;
+                    $endOfDay = true;
                 }
+            }
+
+            if ($lastflow == 0 && $endOfDay) {
+
+                array_push($sheet, [
+                    'flow' => 1,
+                    'data' => null,
+                    'adjusted' => null,
+                    'hasTrouble' => $hasTrouble
+                ]);
+                array_push($object->sheets, $sheet);
+                $sheet = array();
+                $hasEntry = false;
+                $hasTrouble = false;
             }
 
             //$object->sheets = $sheets;
@@ -292,7 +322,8 @@ class PeriodsheetController extends Controller
         return view('periodsheet.report.period.show', [
             'timesheet' => $timesheets,
             'days' => $days,
-            'tt' => $timesheet2
+            'tt' => $timesheet2,
+            'x' => [$year, $month, $idUser]
         ]);
     }
 }

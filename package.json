@@ -19,11 +19,12 @@
         "postcss": "^8.1.14",
         "postcss-import": "^14.0.1",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.35.1",
+        "sass": "^1.35.2",
         "sass-loader": "^12.1.0",
         "tailwindcss": "^2.2.2"
     },
     "dependencies": {
+        "inputmask": "^5.0.6",
         "jquery": "^3.6.0"
     }
 }
