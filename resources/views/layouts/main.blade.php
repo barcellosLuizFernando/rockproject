@@ -42,9 +42,18 @@
                             aria-current="page">Home</a></li>
                     <li class="nav-item"><a href="/periodsheet" class="nav-link text-white @if (session('page')=='periodsheet' ) active @endif">Registrar
                             Ponto</a></li>
-                    <li class="nav-item"><a href="/manageperiod" class="nav-link disabled">Ajustar Ponto</a></li>
-                    <li class="nav-item"><a href="/employee" class="nav-link text-white @if (session('page')=='employee' ) active @endif">Cadastro</a></li>
-                    <li class="nav-item"><a href="/periodsheet/report" class="nav-link text-white @if (session('page')=='periodreport' ) active @endif">Relatório</a></li>
+                    <li class="nav-item"><a href="/periodsheet/report" class="nav-link text-white @if (session('page')=='periodreport' ) active @endif">Relatório do ponto</a></li>
+
+                    @can('isAdmin')
+
+                        <li class="nav-item"><a href="/manageperiod" class="nav-link text-white @if (session('page')=='manageperiod' ) active @endif">Ajustar Ponto</a></li>
+                        <li class="nav-item"><a href="/employee" class="nav-link text-white @if (session('page')=='employee' ) active @endif">Cadastro</a>
+                        </li>
+                        <li class="nav-item"><a href="/configs" class="nav-link text-white @if (session('page')=='configs' ) active @endif">Configurações</a>
+                        </li>
+
+                    @endcan
+
 
                 </ul>
                 <hr>

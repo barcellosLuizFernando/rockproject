@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Throwable;
 
@@ -11,6 +12,10 @@ class EmployeeController extends Controller
 {
     public function index()
     {
+        /** Somente usuário ADM pode acessar esta função */
+        if(!Gate::allows('isAdmin')){
+            abort(404,'Opa, você não tem permissão para executar esta ação.');
+        }
 
         $employee = Employee::all();
 
@@ -21,14 +26,26 @@ class EmployeeController extends Controller
 
     public function show($id)
     {
+
+        /** Somente usuário ADM pode acessar esta função */
+        if(!Gate::allows('isAdmin')){
+            abort(404,'Opa, você não tem permissão para executar esta ação.');
+        }
+
         $employee = Employee::findOrFail($id);
         $employee->load('user');
 
         return view('employee.create', ['employee' => $employee]);
+
     }
 
     public function create()
     {
+
+        /** Somente usuário ADM pode acessar esta função */
+        if(!Gate::allows('isAdmin')){
+            abort(404,'Opa, você não tem permissão para executar esta ação.');
+        }
 
         $user = User::all();
         $employee = new Employee();
@@ -122,6 +139,12 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     {
+
+        /** Somente usuário ADM pode acessar esta função */
+        if(!Gate::allows('isAdmin')){
+            abort(404,'Opa, você não tem permissão para executar esta ação.');
+        }
+
         $employee = Employee::findOrFail($id);
         $employee->delete();
 
@@ -131,6 +154,11 @@ class EmployeeController extends Controller
 
     public function update(Request $request)
     {
+
+        /** Somente usuário ADM pode acessar esta função */
+        if(!Gate::allows('isAdmin')){
+            abort(404,'Opa, você não tem permissão para executar esta ação.');
+        }
 
         $employee = Employee::findOrFail($request->id);
 

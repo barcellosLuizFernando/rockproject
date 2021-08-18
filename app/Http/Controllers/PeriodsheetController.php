@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Mail\TimeSheetLog;
 use App\Models\Periodsheet;
+use App\Models\User;
 use DateTime;
+use Exception;
+use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use stdClass;
+use TypeError;
 
 class PeriodsheetController extends Controller
 {
@@ -202,8 +207,12 @@ class PeriodsheetController extends Controller
     public function showPeriodAdm($year, $month, $idUser)
     {
 
-        return $this->getPeriod($year, $month, $idUser);
+        /** Somente usuário ADM pode acessar esta função */
+        if (!Gate::allows('isAdmin')) {
+            abort(404, 'Opa, você não tem permissão para executar esta ação.');
+        }
 
+        return $this->getPeriod($year, $month, $idUser);
     }
 
     private function getPeriod($year, $month, $idUser)
@@ -225,8 +234,13 @@ class PeriodsheetController extends Controller
 
             $day = date('d/m/Y', strtotime($year . "/" . $month . "/" . $i));
 
+
             $object = new stdClass();
             $object->day = $day;
+            $object->year = $year;
+            $object->month = $month;
+            $object->i = $i;
+            $object->idUser = $idUser;
             setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
             $object->dayName = strftime("%A", strtotime($month . "/" . $i . "/" . $year));
             $object->sheets = [];
@@ -234,6 +248,7 @@ class PeriodsheetController extends Controller
 
             $sheet = [];
             $lastflow = null;
+            $lasttime = new DateTime();
 
             $results = count($timesheets);
             $hasEntry = false;
@@ -263,7 +278,8 @@ class PeriodsheetController extends Controller
                     array_push($sheet, [
                         'flow' => $flow,
                         'data' => $timesheet->datetime,
-                        'adjusted' => $timesheet->adjusted ? "Ajustado" : "Original"
+                        'adjusted' => $timesheet->adjusted ? "Ajustado" : "Original",
+                        'id' => $timesheet->id
 
                     ]);
 
@@ -286,6 +302,17 @@ class PeriodsheetController extends Controller
                             $hasTrouble = true;
                         }
 
+                        try {
+                            $time = date_diff(new DateTime($timesheet->datetime), new DateTime($lasttime));
+                            $sheet[2] = [
+                                'sumformatted' => $time->format('%Hh %Im %Ss'),
+                                'sum' => $time
+                            ];
+                        } catch (TypeError $err) {
+                            $sheet[2] = ['sumformatted' => 'Erro!'];
+                        }
+
+
                         array_push($object->sheets, $sheet);
                         $sheet = array();
                         $hasEntry = false;
@@ -293,6 +320,7 @@ class PeriodsheetController extends Controller
                     }
                     $lastflow = $flow;
                     $endOfDay = true;
+                    $lasttime = $timesheet->datetime;
                 }
             }
 
@@ -315,7 +343,60 @@ class PeriodsheetController extends Controller
             array_push($timesheet2, $object);
         }
 
+        $balance = array();
+        $i = 0;
+        $worktime = new DateTime('00:00');
+        $wt_start = clone $worktime;
+        $qtdDays = 0;
 
+        foreach ($timesheet2 as $timesheet) {
+
+
+            $date = DateTime::createFromFormat('d/m/Y', $timesheet->day)->format('Y-m-d');
+            $wday = getdate(strtotime($date))['wday'];
+
+            $balance[$i]['week'] = $i;
+            $balance[$i]['qtddays'] = $qtdDays;
+            $qtdDays++;
+
+            if (isset($timesheet->sheets)) {
+
+                foreach ($timesheet->sheets as $sum) {
+
+                    if (isset($sum[2])) {
+                        $worktime->add($sum[2]['sum']);
+                        $balance[$i]['worktimeformatted'] = $wt_start->diff($worktime)->format("%H horas %I minutos %S segundos");
+                        $balance[$i]['worktime'] = $wt_start->diff($worktime);
+                    }
+                }
+            }
+
+            if ($wday == 6) {
+                $i++;
+                $worktime = new DateTime('00:00');
+                $qtdDays = 0;
+            }
+        }
+
+        /** Totalizador dos tempos de trabalho */
+        $worktime = new DateTime('00:00');
+        foreach ($balance as $week) {
+            // return $week;
+            try {
+                $worktime->add($week['worktime']);
+            } catch (Exception $err) {
+            }
+        }
+        $i++;
+
+        $total = $wt_start->diff($worktime);
+
+        $balance[$i]['week'] = 'TOTAL';
+        $balance[$i]['qtddays'] = count($timesheet2);
+        $balance[$i]['worktimeformatted'] = (($total->d * 24) + $total->h) . $total->format(' horas %I minutos %s segundos');
+        $balance[$i]['worktime'] = $total;
+
+        // return $balance;
 
         session(['page' => 'periodreport']);
 
@@ -323,7 +404,110 @@ class PeriodsheetController extends Controller
             'timesheet' => $timesheets,
             'days' => $days,
             'tt' => $timesheet2,
-            'x' => [$year, $month, $idUser]
+            'x' => [$year, $month, $idUser],
+            'balance' => $balance
         ]);
+    }
+
+    public function destroy($id)
+    {
+        $periodsheet = Periodsheet::findOrFail($id);
+
+        $idUser = $periodsheet->idUser;
+        $date = $periodsheet->datetime;
+        $year = date('Y', strtotime($date));
+        $month = date('m', strtotime($date));
+
+        $periodsheet->delete();
+
+        return redirect('/periodsheet/report/' . $year . '/' . $month . '/' . $idUser);
+    }
+
+    public function showoneadjust($id)
+    {
+        $periodsheet = Periodsheet::findOrFail($id);
+        $users = User::All()
+            ->where('id', $periodsheet->idUser);
+
+        return view('periodsheet.adjust.show', ['periodsheet' => $periodsheet, 'users' => $users]);
+    }
+
+    public function shownewadjust()
+    {
+
+        $users = User::All()
+            ->sortBy('name');
+
+
+        $object = new stdClass();
+        $object->datetime = date('Y-m-d H:i',time());
+        $object->time = date('Y-m-d H:i:s', time());;
+        $object->flow = null;
+        $object->id = "Novo";
+        $object->description = null;
+
+        // return json_encode($object);
+
+        session(['page' => 'manageperiod']);
+        return view('periodsheet.adjust.show', ['periodsheet' => $object, 'users' => $users]);
+    }
+
+    public function storeadjust(Request $request)
+    {
+        $periodsheet = Periodsheet::findOrFail($request->id);
+
+        $idUser = $request->idUser;
+        $year = date('Y', strtotime($request->datetime));
+        $month = date('m', strtotime($request->datetime));
+
+        $periodsheet->idUser = $idUser;
+        $periodsheet->datetime = $request->datetime . " " . $request->time;
+        $periodsheet->flow = $request->flow;
+        $periodsheet->adjusted = true;
+        $periodsheet->description = $request->observation;
+        $periodsheet->ip = request()->ip();
+
+        $periodsheet->save();
+
+        return redirect('/periodsheet/report/' . $year . '/' . $month . '/' . $idUser);
+    }
+
+    public function showadjust($idUser, $year, $month, $day)
+    {
+
+        $users = User::All()
+            ->where('id', $idUser);
+
+        $object = new stdClass();
+        $object->datetime = date('Y-m-d', strtotime($year . '/' . $month . '/' . $day));
+        $object->time = null;
+        $object->flow = null;
+        $object->id = "Novo";
+        $object->description = null;
+
+
+        session(['page' => 'manageperiod']);
+
+        return view('periodsheet.adjust.show', ['periodsheet' => $object, 'users' => $users]);
+    }
+
+    public function createadjust(Request $request)
+    {
+        $periodsheet = new Periodsheet();
+
+        $idUser = $request->idUser;
+        $year = date('Y', strtotime($request->datetime));
+        $month = date('m', strtotime($request->datetime));
+
+        $periodsheet->idUser = $idUser;
+        $periodsheet->datetime = $request->datetime . " " . $request->time;
+        $periodsheet->flow = $request->flow;
+        $periodsheet->adjusted = true;
+        $periodsheet->description = $request->observation;
+        $periodsheet->ip = request()->ip();
+
+        $periodsheet->save();
+
+        return redirect('/periodsheet/report/' . $year . '/' . $month . '/' . $idUser);
     }
 }

@@ -10,7 +10,7 @@
 
 
 
-        <table class="table table-hover">
+        <table class="table table-hover mb-5">
             <thead>
 
                 <tr>
@@ -33,20 +33,60 @@
                         <tr>
                             @if ($i == 0)
                                 <th scope="row" rowspan="{{ count($day->sheets) == 0 ? 1 : count($day->sheets) }}">
-                                    {{ $day->day }}</th>
-                                    <td rowspan="{{ count($day->sheets) == 0 ? 1 : count($day->sheets) }}" >{{ $day->dayName }} </td>
-                            
+                                    {{ $day->day }}
+                                    @can('isAdmin')
+                                        <a
+                                            href="/periodsheet/adjust/{{ $day->idUser }}/{{ $day->year }}/{{ $day->month }}/{{ $day->i }}">
+                                            <i class="far fa-plus-square text-success"></i>
+                                        </a>
+
+                                    @endcan
+
+                                </th>
+                                <td rowspan="{{ count($day->sheets) == 0 ? 1 : count($day->sheets) }}">
+                                    {{ $day->dayName }} </td>
+
                             @endif
 
 
 
-                            <td class="{{ isset($day->sheets[$i][0]['hasTrouble']) ? "table-danger" : "" }}"> {{ isset($day->sheets[$i]) ? date('H:i:s', strtotime($day->sheets[$i][0]['data'])) : '' }}
+                            <td class="{{ isset($day->sheets[$i][0]['hasTrouble']) ? 'table-danger' : '' }}">
+                                {{ isset($day->sheets[$i]) ? date('H:i:s', strtotime($day->sheets[$i][0]['data'])) : '' }}
+
+                                @can('isAdmin')
+                                    @if (isset($day->sheets[$i][0]['id']))
+                                        <a href="/periodsheet/{{ $day->sheets[$i][0]['id'] }}">
+                                            <i class="far fa-edit text-warning"></i>
+                                        </a>
+                                        <form style="cursor: pointer" onclick="submit()" class="d-inline"
+                                            action="/periodsheet/{{ $day->sheets[$i][0]['id'] }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <i class="far fa-trash-alt text-danger"></i>
+                                        </form>
+                                    @endif
+                                @endcan
+
                             </td>
-                            <td>{{ isset($day->sheets[$i]) ? $day->sheets[$i][0]['adjusted'] : "" }}</td>
-                            <td class="{{ isset($day->sheets[$i][1]['hasTrouble']) ? "table-danger" : "" }}"> {{isset($day->sheets[$i]) ? date('H:i:s', strtotime($day->sheets[$i][1]['data'])) : '' }}
+                            <td>{{ isset($day->sheets[$i]) ? $day->sheets[$i][0]['adjusted'] : '' }}</td>
+                            <td class="{{ isset($day->sheets[$i][1]['hasTrouble']) ? 'table-danger' : '' }}">
+                                {{ isset($day->sheets[$i]) ? date('H:i:s', strtotime($day->sheets[$i][1]['data'])) : '' }}
+                                @can('isAdmin')
+                                    @if (isset($day->sheets[$i][1]['id']))
+                                        <a href="/periodsheet/{{ $day->sheets[$i][1]['id'] }}">
+                                            <i class="far fa-edit text-warning"></i>
+                                        </a>
+                                        <form style="cursor: pointer" onclick="submit()" class="d-inline"
+                                            action="/periodsheet/{{ $day->sheets[$i][1]['id'] }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <i class="far fa-trash-alt text-danger"></i>
+                                        </form>
+                                    @endif
+                                @endcan
                             </td>
-                            <td>{{isset($day->sheets[$i]) ? $day->sheets[$i][1]['adjusted'] : ""}}</td>
-                            <td></td>
+                            <td>{{ isset($day->sheets[$i]) ? $day->sheets[$i][1]['adjusted'] : '' }}</td>
+                            <td>{{ isset($day->sheets[$i][2]) ? $day->sheets[$i][2]['sumformatted'] : '' }}</td>
 
 
 
@@ -60,7 +100,30 @@
             </tbody>
         </table>
 
-       
+        <h1 class="display-6 mb-3"> Resumo do ponto</h1>
+
+        <table class="table table-hover">
+            <thead>
+
+                <tr>
+                    <th scope="col">Semana</th>
+                    <th scope="col">Tempo trabalhado</th>
+                    <th scope="col">Quantidade dias</th>
+                </tr>
+            </thead>
+            @foreach ($balance as $week)
+
+                <tr>
+                    <th scope="row">Semana {{ $week['week'] }}</th>
+
+                    <td>{{ isset($week['worktimeformatted']) ? $week['worktimeformatted'] : '' }}</td>
+
+                    <td>{{ $week['qtddays'] }}</td>
+                </tr>
+                
+            @endforeach
+        </table>
+
     </div>
 
 
