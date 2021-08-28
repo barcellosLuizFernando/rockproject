@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendNewIp;
+use App\Models\Config;
 use App\Models\Team;
+use Exception;
 use Illuminate\Http\Request;
 
 use stdClass;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class ConfigController extends Controller
 {
@@ -15,9 +19,11 @@ class ConfigController extends Controller
     {
 
         /** Somente usuário ADM pode acessar esta função */
-        if(!Gate::allows('isAdmin')){
-            abort(404,'Opa, você não tem permissão para executar esta ação.');
+        if (!Gate::allows('isAdmin')) {
+            abort(404, 'Opa, você não tem permissão para executar esta ação.');
         }
+
+        $dbconfig = Config::where('option', 'externalip')->first();
 
         $teams = Team::all();
 
@@ -42,6 +48,11 @@ class ConfigController extends Controller
         $configs->teams_finance = env('TEAMS_FINANCE');
         $configs->teams_teacher = env('TEAMS_TEACHER');
         $configs->teams_sales = env('TEAMS_SALES');
+        try {
+            $configs->externalip = $dbconfig['key'];
+        } catch (Exception $err) {
+            $configs->externalip = '';
+        }
 
         session(['page' => 'configs']);
         return view('configs.show', ['configs' => $configs, 'teams' => $teams]);
@@ -50,7 +61,7 @@ class ConfigController extends Controller
     public function update(Request $request)
     {
 
-        Env::enablePutenv();    
+        Env::enablePutenv();
         config(['app.timezone' => $request->timezone]);
         //env(['DB_CONNECTION' => $request->db_connection]);
         //env(['APP_NAME' => $request->app_name]);
@@ -68,11 +79,44 @@ class ConfigController extends Controller
         //env(['MAIL_FROM_ADDRESS' => $request->mail_from_address]);
         //env(['MAIL_CC' => $request->mail_cc]);
 
-       // env(['TEAMS_MANAGER' => $request->teams_manager]);
+        // env(['TEAMS_MANAGER' => $request->teams_manager]);
         //env(['TEAMS_FINANCE' => $request->teams_finance]);
         //env(['TEAMS_TEACHER' => $request->teams_teacher]);
         //env(['TEAMS_SALES' => $request->teams_sales]);
         Env::disablePutenv();
         return redirect('/');
+    }
+
+    public function checkip()
+    {
+        $externalContent = file_get_contents('https://ipecho.net/plain');
+        $sendEmail = true;
+
+        $config = Config::where('option', 'externalip')->first();
+
+        /** Se não existir o IP na base, irá gravar */
+        if (!isset($config->key)) {
+            $config = new Config;
+            $config->option = 'externalip';
+            $config->key = $externalContent;
+            $config->save();
+        } else {
+            $config = $config;
+        }
+
+        /** Atualiza a base se o IP anterior for diferente do atual */
+        if ($config->key != $externalContent) {
+            $config->key = $externalContent;
+            $config->save();
+        } else {
+            $sendEmail = false;
+        }
+
+        /** Envia email informando o novo IP */
+        if ($sendEmail) {
+            Mail::to(env('MAIL_CC'))
+                ->send(new SendNewIp($config));
+        }
+        //return json_encode($config);
     }
 }

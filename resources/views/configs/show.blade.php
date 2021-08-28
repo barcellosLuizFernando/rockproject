@@ -37,6 +37,10 @@
                         <label for="timezone" class="form-label">Horário global</label>
                         <input type="text" class="form-control" name="timezone" value="{{ $configs->timezone }}" required>
                     </div>
+                    <div class="col-md-3">
+                        <label for="timezone" class="form-label">IP Externo</label>
+                        <input type="text" class="form-control" name="timezone" value="{{ $configs->externalip }}" required>
+                    </div>
                 </div>
 
                 <div class="row mb-3">

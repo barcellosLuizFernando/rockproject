@@ -44,14 +44,16 @@ Route::post('/employee/create', [EmployeeController::class, 'store'])->middlewar
 Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->middleware('auth');
 Route::put('/employee/{id}', [EmployeeController::class, 'update'])->middleware('auth');
 
-Route::get('/configs', [ConfigController::class, 'index']);
+Route::get('/configs', [ConfigController::class, 'index'])->middleware('auth');
 Route::put('/configs', [ConfigController::class, 'update']);
+Route::get('/configs/checkip', [ConfigController::class, 'checkip']);
 
 Route::get('/seed/country', [SeederController::class, 'seedcountry']);
 Route::get('/seed/state', [SeederController::class, 'seedstate']);
 Route::get('/seed/city', [SeederController::class, 'seedcity']);
 Route::get('/seed/cnae', [SeederController::class, 'seedcnae']);
 Route::get('/seed/cfps_cst', [SeederController::class, 'seedcfpscst']);
+
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
