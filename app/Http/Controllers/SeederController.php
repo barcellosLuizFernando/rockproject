@@ -7,11 +7,13 @@ use App\Models\State;
 use App\Models\City;
 use App\Models\Nfs_cfps_cst;
 use App\Models\Nfs_cnae;
+use App\Models\Transaction;
 use Database\Seeders\CfpsCstSeeder;
 use Database\Seeders\CitySeeder;
 use Database\Seeders\CnaeSeeder;
 use Database\Seeders\CountrySeeder;
 use Database\Seeders\StateSeeder;
+use Database\Seeders\TransactionSeeder;
 use Illuminate\Http\Request;
 use stdClass;
 
@@ -77,6 +79,18 @@ class SeederController extends Controller
         if (count($cfps) == 0) {
             $cfpscst = new CfpsCstSeeder();
             $cfpscst->run();
+        }
+
+        return redirect('/configs');
+    }
+    
+    public function seedtransaction()
+    {
+        $transactions = Transaction::all();
+        
+        if(count($transactions) == 0) {
+            $transactions = new TransactionSeeder();
+            $transactions->run();
         }
 
         return redirect('/configs');

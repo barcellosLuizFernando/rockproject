@@ -38,18 +38,33 @@
             <br>
             <div class="" id="navbarSupportedContent">
                 <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item"><a href="/" class="nav-link text-white @if (session('page')=='/' ) active @endif"
+                    <li class="nav-item"><a href="/" class="nav-link text-white @if (session('page') == '/') active @endif"
                             aria-current="page">Home</a></li>
-                    <li class="nav-item"><a href="/periodsheet" class="nav-link text-white @if (session('page')=='periodsheet' ) active @endif">Registrar
+                    <hr>
+                    @can('isAdmin')
+                        <li class="nav-item"><a href="/manageperiod"
+                                class="nav-link text-white @if (session('page') == 'manageperiod') active @endif">Ajustar Ponto</a></li>
+                    @endcan
+                    <li class="nav-item"><a href="/periodsheet"
+                            class="nav-link text-white @if (session('page') == 'periodsheet') active @endif">Registrar
                             Ponto</a></li>
-                    <li class="nav-item"><a href="/periodsheet/report" class="nav-link text-white @if (session('page')=='periodreport' ) active @endif">Relatório do ponto</a></li>
+                    <li class="nav-item"><a href="/periodsheet/report"
+                            class="nav-link text-white @if (session('page') == 'periodreport') active @endif">Relatório do ponto</a></li>
+
+                    <hr>
+                    <li class="nav-item"><a href="/schedule"
+                            class="nav-link text-white @if (session('page') == 'schedule') active @endif">Agenda</a>
+                    </li>
 
                     @can('isAdmin')
-
-                        <li class="nav-item"><a href="/manageperiod" class="nav-link text-white @if (session('page')=='manageperiod' ) active @endif">Ajustar Ponto</a></li>
-                        <li class="nav-item"><a href="/employee" class="nav-link text-white @if (session('page')=='employee' ) active @endif">Cadastro</a>
+                        <li class="nav-item"><a href="/registers"
+                                class="nav-link text-white @if (session('page') == 'registers') active @endif">Cadastros</a>
                         </li>
-                        <li class="nav-item"><a href="/configs" class="nav-link text-white @if (session('page')=='configs' ) active @endif">Configurações</a>
+                        <li class="nav-item"><a href="/finance"
+                                class="nav-link text-white @if (session('page') == 'finance') active @endif">Financeiro</a>
+                        </li>
+                        <li class="nav-item"><a href="/configs"
+                                class="nav-link text-white @if (session('page') == 'configs') active @endif">Configurações</a>
                         </li>
 
                     @endcan

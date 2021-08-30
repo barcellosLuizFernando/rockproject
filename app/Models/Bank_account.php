@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Bank_account extends Model
 {
     use HasFactory;
 
-    public function state()
+    public function bank()
     {
-        return $this->belongsTo(State::class, 'stateId', 'id');
+        return $this->belongsTo(Bank::class, 'idBank', 'id');
     }
 }

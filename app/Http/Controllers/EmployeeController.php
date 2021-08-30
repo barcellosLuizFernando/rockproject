@@ -19,7 +19,7 @@ class EmployeeController extends Controller
 
         $employee = Employee::all();
 
-        session(['page' => 'employee']);
+        session(['page' => 'registers']);
 
         return view('employee.show', ['employee' => $employee]);
     }

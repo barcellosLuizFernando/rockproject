@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Purchase extends Model
 {
     use HasFactory;
 
-    public function state()
+    public function supplier()
     {
-        return $this->belongsTo(State::class, 'stateId', 'id');
+        # code...
+        return $this->belongsTo(People::class, 'idSupplier', 'id');
     }
 }

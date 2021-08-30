@@ -1,10 +1,17 @@
 <?php
 
+use App\Http\Controllers\BankAccountsController;
+use App\Http\Controllers\BanksController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PeriodsheetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\FinancePlanController;
+use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SeederController;
 
 /*
@@ -37,12 +44,49 @@ Route::get('/dashboard_old', function(){
     return view('dashboard_old');
 })->middleware('auth');
 
-Route::get('/employee', [EmployeeController::class, 'index'])->middleware('auth');
-Route::get('/employee/create', [EmployeeController::class, 'create'])->middleware('auth');
-Route::get('/employee/{id}', [EmployeeController::class, 'show'])->middleware('auth');
-Route::post('/employee/create', [EmployeeController::class, 'store'])->middleware('auth');
-Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->middleware('auth');
-Route::put('/employee/{id}', [EmployeeController::class, 'update'])->middleware('auth');
+Route::get('registers', [RegisterController::class, 'index'])->middleware('auth');
+
+Route::get('registers/employee', [EmployeeController::class, 'index'])->middleware('auth');
+Route::get('registers/employee/create', [EmployeeController::class, 'create'])->middleware('auth');
+Route::get('registers/employee/{id}', [EmployeeController::class, 'show'])->middleware('auth');
+Route::post('registers/employee/create', [EmployeeController::class, 'store'])->middleware('auth');
+Route::delete('registers/employee/{id}', [EmployeeController::class, 'destroy'])->middleware('auth');
+Route::put('registers/employee/{id}', [EmployeeController::class, 'update'])->middleware('auth');
+
+Route::get('/finance', [FinanceController::class, 'index'])->middleware('auth');
+Route::get('/finance/banks', [BanksController::class, 'index'])->middleware('auth');
+Route::get('/finance/banks/create', [BanksController::class, 'create'])->middleware('auth');
+Route::post('/finance/banks/create', [BanksController::class, 'store'])->middleware('auth');
+Route::put('/finance/banks/{id}', [BanksController::class, 'update'])->middleware('auth');
+Route::delete('/finance/banks/{id}', [BanksController::class, 'destroy'])->middleware('auth');
+Route::get('/finance/banks/{id}', [BanksController::class, 'show'])->middleware('auth');
+
+Route::get('/finance/bankaccounts', [BankAccountsController::class, 'index'])->middleware('auth');
+Route::get('/finance/bankaccounts/create', [BankAccountsController::class, 'create'])->middleware('auth');
+Route::get('/finance/bankaccounts/{id}', [BankAccountsController::class, 'show'])->middleware('auth');
+Route::put('/finance/bankaccounts/{id}', [BankAccountsController::class, 'update'])->middleware('auth');
+Route::delete('/finance/bankaccounts/{id}', [BankAccountsController::class, 'destroy'])->middleware('auth');
+Route::post('/finance/bankaccounts/create', [BankAccountsController::class, 'store'])->middleware('auth');
+
+Route::get('/finance/financeplan', [FinancePlanController::class, 'index'])->middleware('auth');
+Route::get('/finance/financeplan/create', [FinancePlanController::class, 'create'])->middleware('auth');
+Route::post('/finance/financeplan/create', [FinancePlanController::class, 'store'])->middleware('auth');
+Route::get('/finance/financeplan/{id}', [FinancePlanController::class, 'show'])->middleware('auth');
+Route::put('/finance/financeplan/{id}', [FinancePlanController::class, 'update'])->middleware('auth');
+
+Route::get('/finance/people', [PeopleController::class, 'index'])->middleware('auth');
+Route::get('/finance/people/create', [PeopleController::class, 'create'])->middleware('auth');
+Route::post('/finance/people/create', [PeopleController::class, 'store'])->middleware('auth');
+Route::get('/finance/people/{id}', [PeopleController::class, 'show'])->middleware('auth');
+Route::put('/finance/people/{id}', [PeopleController::class, 'update'])->middleware('auth');
+Route::delete('/finance/people/{id}', [PeopleController::class, 'destroy'])->middleware('auth');
+
+Route::get('/finance/purchases', [PurchaseController::class, 'index'])->middleware('auth');
+Route::get('/finance/purchases/create', [PurchaseController::class, 'create'])->middleware('auth');
+Route::get('/finance/purchases/{id}', [PurchaseController::class, 'show'])->middleware('auth');
+Route::put('/finance/purchases/{id}', [PurchaseController::class, 'update'])->middleware('auth');
+Route::delete('/finance/purchases/{id}', [PurchaseController::class, 'destroy'])->middleware('auth');
+Route::post('/finance/purchases/create', [PurchaseController::class, 'store'])->middleware('auth');
 
 Route::get('/configs', [ConfigController::class, 'index'])->middleware('auth');
 Route::put('/configs', [ConfigController::class, 'update']);
@@ -53,6 +97,7 @@ Route::get('/seed/state', [SeederController::class, 'seedstate']);
 Route::get('/seed/city', [SeederController::class, 'seedcity']);
 Route::get('/seed/cnae', [SeederController::class, 'seedcnae']);
 Route::get('/seed/cfps_cst', [SeederController::class, 'seedcfpscst']);
+Route::get('/seed/transaction', [SeederController::class, 'seedtransaction']);
 
 
 

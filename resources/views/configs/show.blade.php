@@ -163,6 +163,7 @@
                     <a class="btn btn-primary" href="/seed/city">Cidades</a>
                     <a class="btn btn-primary" href="/seed/cnae">CNAE</a>
                     <a class="btn btn-primary" href="/seed/cfps_cst">CFPS x CST</a>
+                    <a class="btn btn-primary" href="/seed/transaction">Transações</a>
                 
             </div>
 

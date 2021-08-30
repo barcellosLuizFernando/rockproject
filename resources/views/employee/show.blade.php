@@ -7,7 +7,7 @@
         <h1 class="display-6 mb-3"> Cadastro de pessoal</h1>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-            <a href="/employee/create" class="btn btn-primary me-md-2" role="button">Cadastrar pessoa</a>
+            <a href="/registers/employee/create" class="btn btn-primary me-md-2" role="button">Cadastrar pessoa</a>
         </div>
 
 
@@ -35,9 +35,9 @@
                     <td>{{$item->role}}</td>
                     <td>{{$item->admissiondate}}</td>
                     <td>{{$item->active ? 'Ativo' : 'Inativo'}}</td>
-                    <td><a href="/employee/{{ $item->id }}" class="btn btn-secondary btn-sm" role="button"><i class="far fa-edit"></i>
+                    <td><a href="/registers/employee/{{ $item->id }}" class="btn btn-secondary btn-sm" role="button"><i class="far fa-edit"></i>
                         Editar</a>
-                    <form action="/employee/{{ $item->id }}" class="d-inline" method="POST">
+                    <form action="/registers/employee/{{ $item->id }}" class="d-inline" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i>

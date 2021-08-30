@@ -328,7 +328,7 @@
 
             <div class="col-12 mb-5">
                 <button class="btn btn-primary" type="submit">Gravar pessoa</button>
-                <a class="btn btn-secondary" href="/employee">Cancelar</a>
+                <a class="btn btn-secondary" href="/registers/employee">Cancelar</a>
             </div>
 
         </form>
