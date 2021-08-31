@@ -11,7 +11,8 @@ class PeopleController extends Controller
 
     public function index()
     {
-        $people = People::all();
+        $people = People::orderBy('name')->get();
+        
         $people->load(['city', 'city.state']);
 
         return view('finance.people.show', ['people' => $people]);

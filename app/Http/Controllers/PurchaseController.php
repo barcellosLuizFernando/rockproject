@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\Banking\CreateTransaction;
 use App\Models\Financeplan;
+use App\Models\Payment;
 use App\Models\People;
 use App\Models\Purchase;
 use App\Models\Transaction;
@@ -21,7 +22,7 @@ class PurchaseController extends Controller
             ->where('supplier', true)
             ->get();
 
-        $purchases = Purchase::orderBy('date');
+        $purchases = Purchase::orderByDesc('date');
 
         if ($request->startdate != null) {
             $purchases->whereDate('date', '>=', $request->startdate);
@@ -36,13 +37,13 @@ class PurchaseController extends Controller
         $purchases = $purchases->get();
         $purchases->load('supplier');
 
-        
-        foreach($purchases as $purchase){
-            if($purchase->filename != null) {
-                $purchase->filename = Storage::url('purchases/'.$purchase->filename);
+
+        foreach ($purchases as $purchase) {
+            if ($purchase->filename != null) {
+                $purchase->filename = Storage::url('purchases/' . $purchase->filename);
             }
         }
-        
+
         //return $purchases;
 
 
@@ -55,6 +56,9 @@ class PurchaseController extends Controller
     {
         $purchases = Purchase::findOrFail($id);
         $purchases->value = number_format($purchases->value, 2, ',', '.');
+
+        $purchases->load(['payments', 'payments.supplier']);
+
 
 
         $suppliers = People::orderBy('name')
@@ -125,7 +129,26 @@ class PurchaseController extends Controller
         $purchases->invoicenumber = $request->invoicenumber;
         $purchases->save();
 
+        /**It saves the finance payments from purchases */
+        $i = 0;
 
+        foreach ($request->duedate as $duedate) {
+            $payments = new Payment();
+            $payments->date = $purchases->date;
+            $payments->description = $purchases->description;
+            $payments->idFinancePlan = $purchases->idFinancePlan;
+            $payments->idUser = auth()->user()->id;
+            $payments->idUserUpd = auth()->user()->id;
+            $payments->docnumber = $purchases->invoicenumber;
+            $payments->idTransaction = 'PAG01';
+            $payments->idPurchase = $purchases->id;
+
+            $payments->duedate = $duedate;
+            $payments->value = str_replace(',', '.', str_replace('.', '', $request->duevalue[$i]));
+            $payments->idSupplier = $request->liableperson[$i];
+            $payments->save();
+            $i++;
+        }
 
 
         DB::commit();
@@ -173,7 +196,15 @@ class PurchaseController extends Controller
     public function destroy($id)
     {
         # code...
-        $purchases = Purchase::findOrFail($id)->delete();
+        DB::beginTransaction();
+        
+        $purchases = Purchase::findOrFail($id);
+
+        $payments = Payment::where('idPurchase', $purchases->id);
+        $payments->delete();
+        $purchases->delete();
+
+        DB::commit();
 
         return redirect('/finance/purchases');
     }

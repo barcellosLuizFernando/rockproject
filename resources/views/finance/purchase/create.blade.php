@@ -6,7 +6,7 @@
 
         <h1 class="display-6 mb-5"> Cadastro de Compras</h1>
 
-        <form class="" method="POST" autocomplete="off" enctype="multipart/form-data">
+        <form class="___class_+?2___" method="POST" autocomplete="off" enctype="multipart/form-data">
             @csrf
             @if (isset($purchase->id))
                 @method('PUT')
@@ -20,15 +20,17 @@
                 </div>
                 <div class="col-md-6">
                     <label for="supplier" class="form-label">Fornecedor</label>
-                    <select name="supplier" id="supplier" class="form-select" aria-label="Default select example" required>
+                    <select name="supplier" id="supplier" class="form-select" aria-label="Default select example"
+                        required>
                         @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                            <option value="{{ $supplier->id }}" @if ($supplier->id == $purchase->idSupplier) selected @endif>{{ $supplier->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-2">
                     <label for="invoicenumber" class="form-label">Documento</label>
-                    <input type="text" class="form-control" name="invoicenumber" id="invoicenumber" value="{{ $purchase->invoicenumber }}">
+                    <input type="text" class="form-control" name="invoicenumber" id="invoicenumber"
+                        value="{{ $purchase->invoicenumber }}">
                 </div>
                 <div class="col-md-2">
                     <label for="value" class="form-label">Valor</label>
@@ -41,7 +43,7 @@
                     <select name="financeplan" id="financeplan" class="form-select" aria-label="Default select example"
                         required>
                         @foreach ($financeplans as $financeplan)
-                            <option value="{{ $financeplan->id }}">
+                            <option value="{{ $financeplan->id }}" @if ($financeplan->id == $purchase->idFinancePlan) selected @endif>
                                 {{ $financeplan->classification . ' - ' . $financeplan->name }}</option>
                         @endforeach
                     </select>
@@ -51,7 +53,8 @@
                     <select name="transaction" id="transaction" class="form-select" aria-label="Default select example"
                         required>
                         @foreach ($transactions as $transaction)
-                            <option value="{{ $transaction->id }}">{{ $transaction->description }}</option>
+                            <option value="{{ $transaction->id }}" @if ($transaction->id == $purchase->idTransaction) @endif>
+                                {{ $transaction->description }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -101,10 +104,19 @@
                     </thead>
 
                     <tbody>
+                        @foreach ($purchase->payments as $payment)
+                            <tr>
+                                <th scope="row">{{ $payment->id }}</th>
+                                <td>{{ date('d/m/Y', strtotime($payment->duedate)) }}</td>
+                                <td>{{ number_format($payment->value, 2, ',', '.') }}</td>
+                                <td>{{ $payment->supplier->name }}</td>
+                                <td></td>
+                            </tr>
+                        @endforeach
                     </tbody>
 
                 </table>
-                <hr>
+
 
                 <div class="row g-3">
                     <div class="col">
@@ -149,7 +161,7 @@
 @endsection
 
 @section('bodyscript')
-    <script type="application/javascript">
+    <script>
         function addPayment() {
             // Get a reference to the table
             let tableRef = document.getElementById('paymentsTable');
@@ -178,17 +190,23 @@
             // Append a input node to the cell
             //let inputduevalue = document.createElement('input');
             let inputduevalue = document.getElementById('value').cloneNode(true);
-            /*inputduevalue.setAttribute('type', 'text');
-            inputduevalue.setAttribute('data-inputmask',
-                "'alias': 'decimal', 'numericInput': 'true', 'radixPoint': ',', 'groupSeparator': '.', 'removeMaskOnSubmit': 'true' "
-                );
+            inputduevalue.setAttribute('type', 'text');
+            
             inputduevalue.setAttribute('class', 'form-control');
             inputduevalue.setAttribute('inputmode', 'decimal');
             inputduevalue.setAttribute('style', 'text-align: right;');
-            inputduevalue.required = true;*/
+            inputduevalue.required = true;
             inputduevalue.setAttribute('name', 'duevalue[]');
             inputduevalue.setAttribute('id', '');
+            Inputmask({
+                'alias': 'decimal',
+                'numericInput': 'true',
+                'radixPoint': ',',
+                'groupSeparator': '.',
+                'removeMaskOnSubmit': 'true'
+            }).mask(inputduevalue);
             duevalue.appendChild(inputduevalue);
+
 
             // Insert a cell in the row at index 3
             let cellliableperson = newRow.insertCell(3);
@@ -198,6 +216,9 @@
             inputliableperson.setAttribute('id', '');
             cellliableperson.appendChild(inputliableperson);
 
+
+
+
             // Insert a cell in the row at index 4
             let celldelete = newRow.insertCell(4);
             // Append a input node to the cell
@@ -205,11 +226,11 @@
             buttondelete.setAttribute('class', 'far fa-minus-square');
             buttondelete.setAttribute('onclick', 'deleteRow(this)');
             buttondelete.setAttribute('style', 'cursor: pointer');
-            
+
             celldelete.appendChild(buttondelete);
 
+        };
 
-        }
 
         function deleteRow(r) {
             var i = r.parentNode.parentNode.rowIndex;

@@ -14,4 +14,10 @@ class Purchase extends Model
         # code...
         return $this->belongsTo(People::class, 'idSupplier', 'id');
     }
+
+    public function payments()
+    {
+        # code...
+        return $this->hasMany(Payment::class,'idPurchase','id');
+    }
 }

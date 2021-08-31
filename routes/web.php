@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\FinancePlanController;
+use App\Http\Controllers\PaymentMovesController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RegisterController;
@@ -87,6 +89,10 @@ Route::get('/finance/purchases/{id}', [PurchaseController::class, 'show'])->midd
 Route::put('/finance/purchases/{id}', [PurchaseController::class, 'update'])->middleware('auth');
 Route::delete('/finance/purchases/{id}', [PurchaseController::class, 'destroy'])->middleware('auth');
 Route::post('/finance/purchases/create', [PurchaseController::class, 'store'])->middleware('auth');
+
+Route::get('/finance/payments', [PaymentsController::class, 'index'])->middleware('auth');
+
+Route::get('/finance/payments/paybills', [PaymentMovesController::class, 'index'])->middleware('auth');
 
 Route::get('/configs', [ConfigController::class, 'index'])->middleware('auth');
 Route::put('/configs', [ConfigController::class, 'update']);
