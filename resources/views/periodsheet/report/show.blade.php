@@ -51,7 +51,7 @@
                             </div>
                             <div class="col-2 d-grid gap-2">
                                 <a class="btn @if (!isset($year->june)) disabled btn-secondary @else btn-primary @endif"
-                                    href="//periodsheet/report{{ $year->year }}/6/{{ $user->id }}">Junho <span
+                                    href="//periodsheet/report/{{ $year->year }}/6/{{ $user->id }}">Junho <span
                                         class="badge bg-secondary">{{ isset($year->june) ? $year->june : 0 }}</span></a>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="col-2 d-grid gap-2 ">
                                 <a class="btn @if (!isset($year->september)) disabled btn-secondary @else btn-primary @endif"
-                                    href="/periodsheet/report{{ $year->year }}/9/{{ $user->id }}">Setembro <span
+                                    href="/periodsheet/report/{{ $year->year }}/9/{{ $user->id }}">Setembro <span
                                         class="badge bg-secondary">{{ isset($year->september) ? $year->september : 0 }}</span></a>
                             </div>
                             <div class="col-2 d-grid gap-2 ">
@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-2 d-grid gap-2 ">
                                 <a class="btn @if (!isset($year->november)) disabled btn-secondary @else btn-primary @endif"
-                                    href="/periodsheet/report{{ $year->year }}/11/{{ $user->id }}">Novembro <span
+                                    href="/periodsheet/report/{{ $year->year }}/11/{{ $user->id }}">Novembro <span
                                         class="badge bg-secondary">{{ isset($year->november) ? $year->november : 0 }}</span></a>
                             </div>
                             <div class="col-2 d-grid gap-2 ">
