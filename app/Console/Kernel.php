@@ -28,11 +28,11 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->call(function () {
-            if (env('APP_DEBUG') ==  false) {
+            if (boolval(env('APP_DEBUG')) ==  false) {
                 $ip = new ConfigController();
                 $ip->checkip();
             }
-        })->twiceDaily(8, 15);
+        })->twiceDaily(12, 20);
     }
 
     /**

@@ -15,7 +15,9 @@ class PaymentsController extends Controller
         $payments = Payment::orderBy('duedate');
 
         $payments = $payments->get();
-        $payments->load('supplier');
+        $payments->load(['supplier', 'paymentmoves', 'paymentmoves.transaction']);
+
+        //return $payments;
 
         foreach ($payments as $payment) {
 
@@ -26,7 +28,23 @@ class PaymentsController extends Controller
             }
 
             /** Calcula saldo */
-            $payment->balance = $payment->value;
+            $payment->balance = 0.00;
+            foreach ($payment->paymentmoves as $move) {
+
+                if ($move->transaction->type == "NA") {
+                    $payment->balance += $move->value;
+                } else {
+                    $payment->balance -= $move->value;
+                }
+            }
+
+            if ($payment->balance == $payment->value) {
+                $payment->status = "Aberto";
+            } elseif ($payment->balance == 0.00) {
+                $payment->status = "Baixado";
+            } else {
+                $payment->status = "Baixado parcial";
+            }
         }
 
         $suppliers = People::where('supplier', true)

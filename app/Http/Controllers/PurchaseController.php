@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\Banking\CreateTransaction;
 use App\Models\Financeplan;
 use App\Models\Payment;
+use App\Models\PaymentsMove;
 use App\Models\People;
 use App\Models\Purchase;
 use App\Models\Transaction;
@@ -35,12 +36,36 @@ class PurchaseController extends Controller
         }
 
         $purchases = $purchases->get();
-        $purchases->load('supplier');
+        $purchases->load(['supplier', 'payments', 'payments.paymentmoves', 'payments.paymentmoves.transaction']);
 
 
         foreach ($purchases as $purchase) {
             if ($purchase->filename != null) {
                 $purchase->filename = Storage::url('purchases/' . $purchase->filename);
+            }
+
+            //return $purchase->payments;
+
+            /** Identifica quanto falta pagar */
+            $purchase->balance = 0.00;
+            foreach ($purchase->payments as $payment) {
+                foreach ($payment->paymentmoves as $move) {
+
+
+                    if ($move->transaction->type == "NA") {
+                        $purchase->balance += $move->value;
+                    } else {
+                        $purchase->balance -= $move->value;
+                    }
+                }
+            }
+
+            if ($purchase->balance == $purchase->value) {
+                $purchase->status = "Aberto";
+            } elseif ($purchase->balance <= 0.00) {
+                $purchase->status = "Baixado";
+            } else {
+                $purchase->status = "Baixado parcial";
             }
         }
 
@@ -147,6 +172,15 @@ class PurchaseController extends Controller
             $payments->value = str_replace(',', '.', str_replace('.', '', $request->duevalue[$i]));
             $payments->idSupplier = $request->liableperson[$i];
             $payments->save();
+
+            $paymentsMove = new PaymentsMove();
+            $paymentsMove->idPayment = $payments->id;
+            $paymentsMove->idTransaction = 'PAG01';
+            $paymentsMove->datemove = $payments->date;
+            $paymentsMove->value = $payments->value;
+            $paymentsMove->idUser = $payments->idUser;
+            $paymentsMove->save();
+
             $i++;
         }
 
@@ -197,7 +231,7 @@ class PurchaseController extends Controller
     {
         # code...
         DB::beginTransaction();
-        
+
         $purchases = Purchase::findOrFail($id);
 
         $payments = Payment::where('idPurchase', $purchases->id);

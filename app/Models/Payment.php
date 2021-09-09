@@ -14,4 +14,9 @@ class Payment extends Model
         # code...
         return $this->belongsTo(People::class, 'idSupplier', 'id');
     }
+
+    public function paymentmoves()
+    {
+        return $this->hasMany(PaymentsMove::class, 'idPayment', 'id');
+    }
 }

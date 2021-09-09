@@ -172,7 +172,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary">Baixar títulos</button>
+                        <button type="submit" class="btn btn-primary">Baixar títulos</button>
                     </div>
                 </form>
             </div>
@@ -215,7 +215,12 @@
                     //var newCell = newRow.insertCell(0);
 
                     // Append a input node to the cell
-                    var newNode = document.createTextNode(tableOrigin.rows[i].cells[0].innerHTML);
+                    var newNode = document.createElement('input');
+                    newNode.setAttribute('name', 'idpayment[]');
+                    newNode.setAttribute('class', 'form-control');
+                    newNode.setAttribute('type', 'text');
+                    newNode.setAttribute('value', tableOrigin.rows[i].cells[0].innerHTML);
+                    newNode.readOnly = true;
                     newTh.appendChild(newNode);
                     newRow.appendChild(newTh);
 
@@ -279,7 +284,6 @@
                     newNodeValue.setAttribute('style', 'text-align: right;');
                     newNodeValue.setAttribute('onchange', 'billsAmmount();');
                     newNodeValue.required = true;
-
                     newNodeValue.setAttribute('name', 'originalvalue[]');
                     newCellValue.appendChild(newNodeValue);
 
@@ -309,7 +313,7 @@
                     newNodeValue.setAttribute('class', 'form-control');
                     newNodeValue.setAttribute('inputmode', 'decimal');
                     newNodeValue.setAttribute('style', 'text-align: right;');
-                    newNodeValue.required = true;
+                    //newNodeValue.required = true;
                     newNodeValue.setAttribute('name', 'interestvalue[]');
                     newNodeValue.setAttribute('onchange', 'billsAmmount();');
                     newCellValue.appendChild(newNodeValue);
@@ -335,7 +339,7 @@
                     newNodeValue.setAttribute('class', 'form-control');
                     newNodeValue.setAttribute('inputmode', 'decimal');
                     newNodeValue.setAttribute('style', 'text-align: right;');
-                    newNodeValue.required = true;
+                    //newNodeValue.required = true;
                     newNodeValue.setAttribute('name', 'finevalue[]');
                     newNodeValue.setAttribute('onchange', 'billsAmmount();');
                     newCellValue.appendChild(newNodeValue);
@@ -361,7 +365,7 @@
                     newNodeValue.setAttribute('class', 'form-control');
                     newNodeValue.setAttribute('inputmode', 'decimal');
                     newNodeValue.setAttribute('style', 'text-align: right;');
-                    newNodeValue.required = true;
+                    //newNodeValue.required = true;
                     newNodeValue.setAttribute('name', 'discountvalue[]');
                     newNodeValue.setAttribute('onchange', 'billsAmmount();');
                     newCellValue.appendChild(newNodeValue);
@@ -387,7 +391,7 @@
                     newNodeValue.setAttribute('class', 'form-control');
                     newNodeValue.setAttribute('inputmode', 'decimal');
                     newNodeValue.setAttribute('style', 'text-align: right;');
-                    newNodeValue.required = true;
+                    //newNodeValue.required = true;
                     newNodeValue.disabled = true;
                     newNodeValue.setAttribute('value', '0,00');
                     newNodeValue.setAttribute('name', 'totalvalue[]');

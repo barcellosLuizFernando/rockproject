@@ -74,9 +74,9 @@
                                         class="fas fa-cloud-download-alt"></i> Download</a>
                             @endif
                         </td>
-                        <td></td>
+                        <td>{{ $purchase->status }}</td>
                         <td class="text-right">{{ number_format($purchase->value, 2, ',', '.') }}</td>
-                        <td class="text-right">0,00</td>
+                        <td class="text-right">{{ number_format($purchase->balance, 2, ',', '.') }}</td>
                         <td><a href="/finance/purchases/{{ $purchase->id }}" class="btn btn-secondary btn-sm"
                                 role="button"><i class="far fa-edit"></i>
                                 Editar</a>

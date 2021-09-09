@@ -92,7 +92,7 @@ Route::post('/finance/purchases/create', [PurchaseController::class, 'store'])->
 
 Route::get('/finance/payments', [PaymentsController::class, 'index'])->middleware('auth');
 
-Route::get('/finance/payments/paybills', [PaymentMovesController::class, 'index'])->middleware('auth');
+Route::post('/finance/payments/paybills', [PaymentMovesController::class, 'store'])->middleware('auth');
 
 Route::get('/configs', [ConfigController::class, 'index'])->middleware('auth');
 Route::put('/configs', [ConfigController::class, 'update']);

@@ -272,12 +272,14 @@ class PeriodsheetController extends Controller
 
             foreach ($timesheets as $timesheet) {
 
+                $flow = $timesheet->flow;
+
                 if ($day == date('d/m/Y', strtotime($timesheet->datetime))) {
 
-                    $flow = $timesheet->flow;
 
                     if ($flow == 0) $hasEntry = true;
 
+                    /** Verifica se o dia já teve uma entrada */
                     if (!$hasEntry) {
                         array_push($sheet, [
                             'flow' => 0,
@@ -287,6 +289,21 @@ class PeriodsheetController extends Controller
                         ]);
                         $hasTrouble = true;
                         $hasEntry = true;
+                        $lastflow = 0;
+                        
+                    } elseif ($flow == 0 && $lastflow === 0 ){
+                        
+                        $hasTrouble = true;
+                        array_push($sheet, [
+                            'flow' => 1,
+                            'data' => null,
+                            'adjusted' => null,
+                            'hasTrouble' => $hasTrouble
+                        ]);
+
+                        array_push($object->sheets, $sheet);
+                        $sheet = array();
+
                     }
 
                     array_push($sheet, [
@@ -294,19 +311,18 @@ class PeriodsheetController extends Controller
                         'data' => $timesheet->datetime,
                         'adjusted' => $timesheet->adjusted ? "Ajustado" : "Original",
                         'id' => $timesheet->id
-
                     ]);
 
+                    $lastflow = $flow;
 
                     $results--;
                     /** Vai salvar o Array se:
                      * 1. Chegar no final do array
                      * 2. For um movimento de saída
-                     * 3. For um movimento igual ao movimento anterior
                      */
-                    if ($i <= 0 || $timesheet->flow == 1 || ($lastflow == $flow && $lastflow != null)) {
+                    if ($i <= 0 || $lastflow == 1) {
 
-                        if ($hasEntry && $lastflow == $flow) {
+                        if ($lastflow == 0) {
                             array_push($sheet, [
                                 'flow' => '',
                                 'data' => null,
@@ -332,12 +348,18 @@ class PeriodsheetController extends Controller
                         $hasEntry = false;
                         $hasTrouble = false;
                     }
-                    $lastflow = $flow;
+
                     $endOfDay = true;
                     $lasttime = $timesheet->datetime;
                 }
-            }
 
+                /** Informa que a entrada já foi lançada */
+                if ($flow == 1) $hasEntry == false;
+
+            } // END OF TIMESHEETS
+
+            /** Se o último fluxo foi uma entrada e chegou o final do dia, 
+             * acrescenta uma saída fictícia */
             if ($lastflow == 0 && $endOfDay) {
 
                 array_push($sheet, [
@@ -350,10 +372,12 @@ class PeriodsheetController extends Controller
                 $sheet = array();
                 $hasEntry = false;
                 $hasTrouble = false;
+                $lastflow = 1;
             }
 
             //$object->sheets = $sheets;
 
+            /** Inclui dia no array final */
             array_push($timesheet2, $object);
         }
 
@@ -378,9 +402,13 @@ class PeriodsheetController extends Controller
                 foreach ($timesheet->sheets as $sum) {
 
                     if (isset($sum[2])) {
-                        $worktime->add($sum[2]['sum']);
-                        $balance[$i]['worktimeformatted'] = $wt_start->diff($worktime)->format("%H horas %I minutos %S segundos");
-                        $balance[$i]['worktime'] = $wt_start->diff($worktime);
+
+                        try {
+                            $worktime->add($sum[2]['sum']);
+                            $balance[$i]['worktimeformatted'] = $wt_start->diff($worktime)->format("%H horas %I minutos %S segundos");
+                            $balance[$i]['worktime'] = $wt_start->diff($worktime);
+                        } catch (Exception $err) {
+                        }
                     }
                 }
             }
@@ -413,6 +441,8 @@ class PeriodsheetController extends Controller
         // return $balance;
 
         session(['page' => 'periodreport']);
+
+        //return $timesheet2;
 
         return view('periodsheet.report.period.show', [
             'timesheet' => $timesheets,
