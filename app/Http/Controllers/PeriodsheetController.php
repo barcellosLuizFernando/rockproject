@@ -384,7 +384,7 @@ class PeriodsheetController extends Controller
         $balance = array();
         $i = 0;
         $worktime = new DateTime('00:00');
-        $wt_start = clone $worktime;
+        $wt_start = new DateTime('00:00');
         $qtdDays = 0;
 
         foreach ($timesheet2 as $timesheet) {
@@ -405,8 +405,11 @@ class PeriodsheetController extends Controller
 
                         try {
                             $worktime->add($sum[2]['sum']);
-                            $balance[$i]['worktimeformatted'] = $wt_start->diff($worktime)->format("%H horas %I minutos %S segundos");
-                            $balance[$i]['worktime'] = $wt_start->diff($worktime);
+
+                            $total = $wt_start->diff($worktime);
+                            
+                            $balance[$i]['worktime'] = $total;
+                            $balance[$i]['worktimeformatted'] = (($total->d * 24) + $total->h) . $total->format(" horas %I minutos %S segundos");
                         } catch (Exception $err) {
                         }
                     }
