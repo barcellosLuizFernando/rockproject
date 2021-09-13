@@ -382,7 +382,7 @@ class PeriodsheetController extends Controller
         }
 
         $balance = array();
-        $i = 0;
+        $i = 1;
         $worktime = new DateTime('00:00');
         $wt_start = new DateTime('00:00');
         $qtdDays = 0;
