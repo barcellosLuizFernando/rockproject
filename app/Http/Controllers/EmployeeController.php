@@ -134,7 +134,7 @@ class EmployeeController extends Controller
 
         $employee->save();
 
-        return redirect('/employee');
+        return redirect('/registers/employee');
     }
 
     public function destroy($id)

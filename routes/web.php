@@ -1,5 +1,6 @@
 <?php
 
+use App\Charts\SalesChart;
 use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\BanksController;
 use App\Http\Controllers\DashboardController;
@@ -12,9 +13,12 @@ use App\Http\Controllers\FinancePlanController;
 use App\Http\Controllers\PaymentMovesController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SeederController;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,12 +52,20 @@ Route::get('/dashboard_old', function(){
 
 Route::get('registers', [RegisterController::class, 'index'])->middleware('auth');
 
-Route::get('registers/employee', [EmployeeController::class, 'index'])->middleware('auth');
-Route::get('registers/employee/create', [EmployeeController::class, 'create'])->middleware('auth');
-Route::get('registers/employee/{id}', [EmployeeController::class, 'show'])->middleware('auth');
-Route::post('registers/employee/create', [EmployeeController::class, 'store'])->middleware('auth');
-Route::delete('registers/employee/{id}', [EmployeeController::class, 'destroy'])->middleware('auth');
-Route::put('registers/employee/{id}', [EmployeeController::class, 'update'])->middleware('auth');
+Route::get('/registers/products', [ProductsController::class, 'index'])->middleware('auth');
+Route::get('/registers/products/create', [ProductsController::class, 'create'])->middleware('auth');
+Route::post('/registers/products/create', [ProductsController::class, 'store'])->middleware('auth');
+Route::get('/registers/products/{id}', [ProductsController::class, 'show'])->middleware('auth');
+Route::put('/registers/products/{id}', [ProductsController::class, 'update'])->middleware('auth');
+Route::delete('/registers/products/{id}', [ProductsController::class, 'destroy'])->middleware('auth');
+
+
+Route::get('/registers/employee', [EmployeeController::class, 'index'])->middleware('auth');
+Route::get('/registers/employee/create', [EmployeeController::class, 'create'])->middleware('auth');
+Route::get('/registers/employee/{id}', [EmployeeController::class, 'show'])->middleware('auth');
+Route::post('/registers/employee/create', [EmployeeController::class, 'store'])->middleware('auth');
+Route::delete('/registers/employee/{id}', [EmployeeController::class, 'destroy'])->middleware('auth');
+Route::put('/registers/employee/{id}', [EmployeeController::class, 'update'])->middleware('auth');
 
 Route::get('/finance', [FinanceController::class, 'index'])->middleware('auth');
 Route::get('/finance/banks', [BanksController::class, 'index'])->middleware('auth');
@@ -90,6 +102,10 @@ Route::put('/finance/purchases/{id}', [PurchaseController::class, 'update'])->mi
 Route::delete('/finance/purchases/{id}', [PurchaseController::class, 'destroy'])->middleware('auth');
 Route::post('/finance/purchases/create', [PurchaseController::class, 'store'])->middleware('auth');
 
+Route::get('/finance/sales', [SalesController::class, 'index'])->middleware('auth');
+Route::post('/finance/sales/importxml', [SalesController::class, 'create'])->middleware('auth');
+
+
 Route::get('/finance/payments', [PaymentsController::class, 'index'])->middleware('auth');
 
 Route::post('/finance/payments/paybills', [PaymentMovesController::class, 'store'])->middleware('auth');
@@ -105,7 +121,16 @@ Route::get('/seed/cnae', [SeederController::class, 'seedcnae']);
 Route::get('/seed/cfps_cst', [SeederController::class, 'seedcfpscst']);
 Route::get('/seed/transaction', [SeederController::class, 'seedtransaction']);
 
-
+Route::get('/sales', function(){
+    
+    
+    return DB::table('sales')
+    ->join('sales_items', 'sales.id', '=', 'sales_items.idSale')
+    ->join('financeplans', 'sales_items.idFinancePlan', '=', 'financeplans.id')
+    ->select('financeplans.name', DB::raw('SUM(sales.value) as total_sales'))
+    ->groupBy('financeplans.name')
+    ->get();;
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

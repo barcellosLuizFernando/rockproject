@@ -33,7 +33,7 @@
                     <th scope="col">{{$item->id}}</th>
                     <td>{{$item->name}}</td>
                     <td>{{$item->role}}</td>
-                    <td>{{$item->admissiondate}}</td>
+                    <td>{{ date('d/m/Y', strtotime($item->admissiondate)) }}</td>
                     <td>{{$item->active ? 'Ativo' : 'Inativo'}}</td>
                     <td><a href="/registers/employee/{{ $item->id }}" class="btn btn-secondary btn-sm" role="button"><i class="far fa-edit"></i>
                         Editar</a>

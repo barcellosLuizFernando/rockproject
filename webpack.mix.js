@@ -18,6 +18,8 @@ mix
     .js('node_modules/inputmask/dist/jquery.inputmask.js', 'public/js/inputmask.js')
     .js('node_modules/inputmask/dist/bindings/inputmask.binding.js', 'public/js/inputmask.binding.js')
     .js('vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js', 'public/js/bootstrap.js').sourceMaps()
+    .js('node_modules/echarts/dist/echarts.min.js', 'public/js/echarts.min.js')
+    .js('node_modules/@chartisan/echarts/dist/chartisan_echarts.js', 'public/js/chartisan_echarts.js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
