@@ -24,8 +24,7 @@ class SalesChart extends BaseChart
         $sales = DB::table('sales')
             ->join('sales_items', 'sales.id', '=', 'sales_items.idSale')
             ->join('financeplans', 'sales_items.idFinancePlan', '=', 'financeplans.id')
-            ->select('financeplans.name', DB::raw('SUM(sales.value) as total_sales'), DB::raw('MONTH(sales.date) as data'))
-            ->groupBy(DB::raw('MONTH(sales.date)'))
+            ->select('financeplans.name', DB::raw('SUM(sales.value) as total_sales'))
             ->groupBy('financeplans.name')
             ->get();
 

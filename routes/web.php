@@ -121,17 +121,6 @@ Route::get('/seed/cnae', [SeederController::class, 'seedcnae']);
 Route::get('/seed/cfps_cst', [SeederController::class, 'seedcfpscst']);
 Route::get('/seed/transaction', [SeederController::class, 'seedtransaction']);
 
-Route::get('/sales', function(){
-    
-    
-    return DB::table('sales')
-    ->join('sales_items', 'sales.id', '=', 'sales_items.idSale')
-    ->join('financeplans', 'sales_items.idFinancePlan', '=', 'financeplans.id')
-    ->select('financeplans.name', DB::raw('SUM(sales.value) as total_sales'))
-    ->groupBy('financeplans.name')
-    ->get();;
-});
-
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
