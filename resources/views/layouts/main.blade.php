@@ -110,6 +110,7 @@
     <script src="/js/bootstrap.js"></script>
     <script src="/js/echarts.min.js"></script>
     <script src="/js/chartisan_echarts.js"></script>
+    
 
     @yield('bodyscript')
 </body>
