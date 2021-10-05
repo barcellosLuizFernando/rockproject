@@ -36,6 +36,7 @@ Route::get('/periodsheet', [PeriodsheetController::class, 'show'])->middleware('
 Route::get('/periodsheet/report', [PeriodsheetController::class, 'showperiods'])->middleware('auth');
 Route::get('/periodsheet/report/{year}/{month}', [PeriodsheetController::class, 'showperiod'])->middleware('auth');
 Route::get('/periodsheet/report/{year}/{month}/{id}', [PeriodsheetController::class, 'showperiodadm'])->middleware('auth');
+Route::get('/periodsheet/report/pdf/{year}/{month}/{id}', [PeriodsheetController::class, 'getPDF'])->middleware('auth');
 Route::post('/periodsheet/adjust/Novo', [PeriodsheetController::class, 'createadjust'])->middleware('auth');
 Route::put('/periodsheet/adjust/{id}', [PeriodsheetController::class, 'storeadjust'])->middleware('auth');
 Route::get('/periodsheet/adjust/{id}/{year}/{month}/{day}', [PeriodsheetController::class, 'showadjust'])->middleware('auth');

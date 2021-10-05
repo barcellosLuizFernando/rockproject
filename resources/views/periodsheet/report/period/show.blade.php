@@ -102,7 +102,7 @@
 
         <h1 class="display-6 mb-3"> Resumo do ponto</h1>
 
-        <table class="table table-hover">
+        <table class="table table-hover mb-5">
             <thead>
 
                 <tr>
@@ -123,6 +123,11 @@
                 
             @endforeach
         </table>
+
+        <div class="" role="group" aria-label="periodsheet report actions">
+            <a class="btn btn-secondary" href="/periodsheet/report"><i class="far fa-window-close"></i> Voltar</a>
+            <a class="btn btn-secondary" href="/periodsheet/report/pdf/{{ $x[0] }}/{{ $x[1] }}/{{ $x[2] }}"> <i class="far fa-file-pdf"></i> Exportar PDF</a>
+        </div>
 
     </div>
 

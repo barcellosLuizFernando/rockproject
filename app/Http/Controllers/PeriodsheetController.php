@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\TimeSheetLog;
 use App\Models\Periodsheet;
 use App\Models\User;
+use PDF;
 use DateTime;
 use Exception;
 use Illuminate\Database\DBAL\TimestampType;
@@ -229,7 +230,7 @@ class PeriodsheetController extends Controller
         return $this->getPeriod($year, $month, $idUser);
     }
 
-    private function getPeriod($year, $month, $idUser)
+    private function getPeriod($year, $month, $idUser, $toPDF = false)
     {
 
         $timesheets = Periodsheet::with('user')
@@ -238,6 +239,11 @@ class PeriodsheetController extends Controller
             ->where(Periodsheet::raw('MONTH(datetime)'), $month)
             ->orderBy('datetime', 'ASC')
             ->get();
+
+
+        //return $timesheets;
+
+        $fileName = 'Folha Ponto_' . $timesheets[0]->user->name . '_' . $year . '_' . $month . '.pdf';
 
         $days = date('t', strtotime($year . "/" . $month . "/01"));
 
@@ -290,9 +296,8 @@ class PeriodsheetController extends Controller
                         $hasTrouble = true;
                         $hasEntry = true;
                         $lastflow = 0;
-                        
-                    } elseif ($flow == 0 && $lastflow === 0 ){
-                        
+                    } elseif ($flow == 0 && $lastflow === 0) {
+
                         $hasTrouble = true;
                         array_push($sheet, [
                             'flow' => 1,
@@ -303,7 +308,6 @@ class PeriodsheetController extends Controller
 
                         array_push($object->sheets, $sheet);
                         $sheet = array();
-
                     }
 
                     array_push($sheet, [
@@ -355,7 +359,6 @@ class PeriodsheetController extends Controller
 
                 /** Informa que a entrada já foi lançada */
                 if ($flow == 1) $hasEntry == false;
-
             } // END OF TIMESHEETS
 
             /** Se o último fluxo foi uma entrada e chegou o final do dia, 
@@ -407,7 +410,7 @@ class PeriodsheetController extends Controller
                             $worktime->add($sum[2]['sum']);
 
                             $total = $wt_start->diff($worktime);
-                            
+
                             $balance[$i]['worktime'] = $total;
                             $balance[$i]['worktimeformatted'] = (($total->d * 24) + $total->h) . $total->format(" horas %I minutos %S segundos");
                         } catch (Exception $err) {
@@ -447,13 +450,26 @@ class PeriodsheetController extends Controller
 
         //return $timesheet2;
 
-        return view('periodsheet.report.period.show', [
-            'timesheet' => $timesheets,
-            'days' => $days,
-            'tt' => $timesheet2,
-            'x' => [$year, $month, $idUser],
-            'balance' => $balance
-        ]);
+        if (!$toPDF) {
+            return view('periodsheet.report.period.show', [
+                'timesheet' => $timesheets,
+                'days' => $days,
+                'tt' => $timesheet2,
+                'x' => [$year, $month, $idUser],
+                'balance' => $balance
+            ]);
+        } else {
+            $pdf = PDF::loadView('pdf.periodsheet', [
+                'timesheet' => $timesheets,
+                'days' => $days,
+                'tt' => $timesheet2,
+                'x' => [$year, $month, $idUser],
+                'balance' => $balance
+            ]);
+
+            //return $timesheet;
+            return $pdf->download($fileName);
+        }
     }
 
     public function destroy($id)
@@ -556,5 +572,12 @@ class PeriodsheetController extends Controller
         $periodsheet->save();
 
         return redirect('/periodsheet/report/' . $year . '/' . $month . '/' . $idUser);
+    }
+
+    public function getPDF($year, $month, $idUser)
+    {
+        # code...
+
+        return $this->getPeriod($year, $month, $idUser, true);
     }
 }
