@@ -35,6 +35,15 @@
             </div>
           </div>
         </div>
+        <div class="col-sm-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Usuários</h5>
+              <p class="card-text"></p>
+              <a href="/registers/users" class="btn btn-primary">Acessar</a>
+            </div>
+          </div>
+        </div>
 
     </div>
 

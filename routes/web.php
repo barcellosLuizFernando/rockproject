@@ -1,6 +1,7 @@
 <?php
 
 use App\Charts\SalesChart;
+use App\Http\Controllers\Auth\Users;
 use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\BanksController;
 use App\Http\Controllers\DashboardController;
@@ -64,6 +65,7 @@ Route::put('/registers/products/{id}', [ProductsController::class, 'update'])->m
 Route::delete('/registers/products/{id}', [ProductsController::class, 'destroy'])->middleware('auth');
 
 Route::get('/schedule', [ScheduleController::class, 'index'])->middleware('auth');
+Route::get('/registers/users', [ScheduleController::class, 'index'])->middleware('auth');
 
 Route::get('/registers/employee', [EmployeeController::class, 'index'])->middleware('auth');
 Route::get('/registers/employee/create', [EmployeeController::class, 'create'])->middleware('auth');
@@ -134,8 +136,6 @@ Route::get('/seed/city', [SeederController::class, 'seedcity']);
 Route::get('/seed/cnae', [SeederController::class, 'seedcnae']);
 Route::get('/seed/cfps_cst', [SeederController::class, 'seedcfpscst']);
 Route::get('/seed/transaction', [SeederController::class, 'seedtransaction']);
-
-Route::get('/s', [SalesController::class, 'getSales']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

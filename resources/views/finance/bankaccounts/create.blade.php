@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="accountnumber" class="form-label">Número da Conta</label>
-                    <input type="text" class="form-control" name="accountnumber" value="{{ $bankaccount->agencynumber }}">
+                    <input type="text" class="form-control" name="accountnumber" value="{{ $bankaccount->accountnumber }}">
                 </div>
                 <div class="col-md-3">
                     <label for="startdate" class="form-label">Data de início</label>
