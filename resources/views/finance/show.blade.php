@@ -22,7 +22,7 @@
             <div class="card-body">
               <h5 class="card-title">Plano financeiro</h5>
               <p class="card-text"></p>
-              <a href="/finance/financeplan" class="btn btn-primary">Acessar</a>
+              <a href="/finance/financeplan" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Acessar</a>
               
             </div>
           </div>
@@ -32,7 +32,7 @@
             <div class="card-body">
               <h5 class="card-title">Pessoas</h5>
               <p class="card-text"></p>
-              <a href="/finance/people" class="btn btn-primary">Acessar</a>
+              <a href="/finance/people" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Acessar</a>
             </div>
           </div>
         </div>
@@ -41,16 +41,17 @@
             <div class="card-body">
               <h5 class="card-title">Compras</h5>
               <p class="card-text"></p>
-              <a href="/finance/purchases" class="btn btn-primary">Acessar</a>
+              <a href="/finance/purchases" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Acessar</a>
             </div>
           </div>
         </div>
-        <div class="col-sm-3 mb-3">
+        <div class="col-sm-4 mb-3">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Vendas</h5>
               <p class="card-text"></p>
-              <a href="/finance/sales" class="btn btn-primary">Acessar</a>
+              <a href="/finance/sales" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Acessar</a>
+              <a href="/finance/sales/report" class="btn btn-primary"><i class="far fa-file-alt"></i> Faturamento</a>
             </div>
           </div>
         </div>
@@ -59,7 +60,7 @@
             <div class="card-body">
               <h5 class="card-title">Tesouraria</h5>
               <p class="card-text"></p>
-              <a href="/finance/treasury" class="btn btn-primary">Acessar</a>
+              <a href="/finance/treasury" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Acessar</a>
             </div>
           </div>
         </div>
@@ -68,7 +69,7 @@
             <div class="card-body">
               <h5 class="card-title">Contas a pagar</h5>
               <p class="card-text"></p>
-              <a href="/finance/payments" class="btn btn-primary">Acessar</a>
+              <a href="/finance/payments" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Acessar</a>
             </div>
           </div>
         </div>
@@ -77,7 +78,7 @@
             <div class="card-body">
               <h5 class="card-title">Contas a receber</h5>
               <p class="card-text"></p>
-              <a href="/finance/receivables" class="btn btn-primary">Acessar</a>
+              <a href="/finance/receivables" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Acessar</a>
             </div>
           </div>
         </div>
@@ -86,7 +87,7 @@
             <div class="card-body">
               <h5 class="card-title">Empréstimos</h5>
               <p class="card-text"></p>
-              <a href="/finance/loans" class="btn btn-primary">Acessar</a>
+              <a href="/finance/loans" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Acessar</a>
             </div>
           </div>
         </div>

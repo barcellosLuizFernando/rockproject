@@ -17,7 +17,10 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SeederController;
+use App\Http\Controllers\TransactionController;
+use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -47,7 +50,7 @@ Route::get('/periodsheet/{id}', [PeriodsheetController::class, 'showoneadjust'])
 Route::delete('/periodsheet/{id}', [PeriodsheetController::class, 'destroy'])->middleware('auth');
 Route::get('/manageperiod', [PeriodsheetController::class, 'shownewadjust'])->middleware('auth');
 Route::get('/mailable', [PeriodsheetController::class, 'mailable'])->middleware('auth');
-Route::get('/dashboard_old', function(){
+Route::get('/dashboard_old', function () {
     return view('dashboard_old');
 })->middleware('auth');
 
@@ -60,6 +63,7 @@ Route::get('/registers/products/{id}', [ProductsController::class, 'show'])->mid
 Route::put('/registers/products/{id}', [ProductsController::class, 'update'])->middleware('auth');
 Route::delete('/registers/products/{id}', [ProductsController::class, 'destroy'])->middleware('auth');
 
+Route::get('/schedule', [ScheduleController::class, 'index'])->middleware('auth');
 
 Route::get('/registers/employee', [EmployeeController::class, 'index'])->middleware('auth');
 Route::get('/registers/employee/create', [EmployeeController::class, 'create'])->middleware('auth');
@@ -67,6 +71,13 @@ Route::get('/registers/employee/{id}', [EmployeeController::class, 'show'])->mid
 Route::post('/registers/employee/create', [EmployeeController::class, 'store'])->middleware('auth');
 Route::delete('/registers/employee/{id}', [EmployeeController::class, 'destroy'])->middleware('auth');
 Route::put('/registers/employee/{id}', [EmployeeController::class, 'update'])->middleware('auth');
+
+Route::get('/registers/transactions', [TransactionController::class, 'index'])->middleware('auth');
+Route::get('/registers/transactions/create', [TransactionController::class, 'create'])->middleware('auth');
+Route::post('/registers/transactions/create', [TransactionController::class, 'store'])->middleware('auth');
+Route::get('/registers/transactions/{id}', [TransactionController::class, 'show'])->middleware('auth');
+Route::put('/registers/transactions/{id}', [TransactionController::class, 'update'])->middleware('auth');
+Route::delete('/registers/transactions/{id}', [TransactionController::class, 'destroy'])->middleware('auth');
 
 Route::get('/finance', [FinanceController::class, 'index'])->middleware('auth');
 Route::get('/finance/banks', [BanksController::class, 'index'])->middleware('auth');
@@ -104,6 +115,8 @@ Route::delete('/finance/purchases/{id}', [PurchaseController::class, 'destroy'])
 Route::post('/finance/purchases/create', [PurchaseController::class, 'store'])->middleware('auth');
 
 Route::get('/finance/sales', [SalesController::class, 'index'])->middleware('auth');
+Route::get('/finance/sales/report', [SalesController::class, 'show'])->middleware('auth');
+Route::get('/finance/sales/report/pdf', [SalesController::class, 'getPDF'])->middleware('auth');
 Route::post('/finance/sales/importxml', [SalesController::class, 'create'])->middleware('auth');
 
 
@@ -121,6 +134,8 @@ Route::get('/seed/city', [SeederController::class, 'seedcity']);
 Route::get('/seed/cnae', [SeederController::class, 'seedcnae']);
 Route::get('/seed/cfps_cst', [SeederController::class, 'seedcfpscst']);
 Route::get('/seed/transaction', [SeederController::class, 'seedtransaction']);
+
+Route::get('/s', [SalesController::class, 'getSales']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

@@ -11,11 +11,10 @@ use App\Models\ReceivablesMove;
 use App\Models\Sale;
 use App\Models\SalesItem;
 use Exception;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
-use function GuzzleHttp\Promise\exception_for;
 
 class SalesController extends Controller
 {
@@ -169,5 +168,120 @@ class SalesController extends Controller
 
 
         return redirect('/finance/sales');
+    }
+
+    public function getSales()
+    {
+        # code...
+        $sales = Sale::all();
+        $sales->load('client');
+        $sales->load('itens');
+        $sales->load('itens.financeplan');
+
+        $database = [];
+
+        foreach ($sales as $sale) {
+            # code...
+            foreach ($sale->itens as $item) {
+                # code...
+                $financeplan = $item->financeplan->name;
+
+                //It verify if the finance plan already exists into the array
+                if (!array_key_exists($financeplan, $database)) {
+
+                    $database[$financeplan] = [];
+                }
+
+                //This sort the registers by theirs last day month
+                $lastDateOfMonth = date("Y-m-t", strtotime($sale->date));
+                if (!array_key_exists($lastDateOfMonth, $database[$financeplan])) {
+                    $database[$financeplan][$lastDateOfMonth] = [];
+                    $database[$financeplan][$lastDateOfMonth]['sumValue'] = 0.00;
+                    $database[$financeplan][$lastDateOfMonth]['qtdRegisters'] = 0;
+                    $database[$financeplan][$lastDateOfMonth]['details'] = [];
+                }
+
+                //At least, it stores the result into the array
+                //array_push($database[$financeplan][$lastDateOfMonth], 0.00);
+                array_push($database[$financeplan][$lastDateOfMonth]['details'], $sale);
+                $database[$financeplan][$lastDateOfMonth]['sumValue'] += $sale->value;
+                $database[$financeplan][$lastDateOfMonth]['qtdRegisters']++;
+            }
+        }
+
+
+
+        return ($database);
+    }
+
+    public function show($getPDF = false)
+    {
+        # code...
+
+        $sales = $this->getSales();
+        $financeplans = [];
+        foreach ($sales as $key => $value) {
+            # code...
+            $financeplans[$key] = $key;
+        }
+
+        $salesDates = [];
+        $salesSum = [];
+        foreach ($financeplans as $fplan) {
+            $salesSum[$fplan] = 0.00;
+        }
+        $salesSum['Total'] = 0.00;
+
+        // First, add all the dates
+        foreach ($sales as $key => $value) {
+            # code...
+
+            foreach ($value as $dayKey => $dayValue) {
+                if (!array_key_exists($dayKey, $salesDates)) {
+                    $salesDates[$dayKey] = [];
+                }
+
+                $salesDates[$dayKey]['Data'] = '';
+                foreach ($financeplans as $fplan) {
+                    $salesDates[$dayKey][$fplan] = 0.00;
+                }
+                $salesDates[$dayKey]['Total'] = 0.00;
+            }
+        }
+
+        setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+        date_default_timezone_set('America/Sao_Paulo');
+        //Now, add the values
+        foreach ($sales as $key => $value) {
+            # code...
+            foreach ($value as $dayKey => $dayValue) {
+                $salesDates[$dayKey]['Data'] = strftime('%B/%Y', strtotime($dayKey));
+                $salesDates[$dayKey][$key] += $dayValue['sumValue'];
+                $salesSum[$key] += $dayValue['sumValue'];
+                $salesDates[$dayKey]['Total'] += $dayValue['sumValue'];
+                $salesSum['Total'] += $dayValue['sumValue'];
+            }
+        }
+
+        if (!$getPDF) {
+            return view('finance.sales.report.show', [
+                'salesDates' => $salesDates,
+                'financeplans' => $financeplans,
+                'salesSum' => $salesSum
+            ]);
+        } else {
+            $pdf = PDF::loadView('pdf.sales', [
+                'salesDates' => $salesDates,
+                'financeplans' => $financeplans,
+                'salesSum' => $salesSum
+            ]);
+        }
+        $fileName = 'Histórico de Faturamento.pdf';
+        return $pdf->download($fileName);
+    }
+
+    public function getPDF()
+    {
+        return $this->show(true);
     }
 }

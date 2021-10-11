@@ -171,6 +171,14 @@
             page-break-after: avoid;
         }
 
+        .text-center {
+            text-align: center !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
     </style>
 
     <!-- Scripts -->

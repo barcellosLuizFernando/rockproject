@@ -109,11 +109,6 @@
                             required>
                     </div>
                     <div class="col-md-2">
-                        <label for="db_username" class="form-label">Usuário</label>
-                        <input type="text" class="form-control" name="db_username" value="{{ $configs->db_username }}"
-                            required>
-                    </div>
-                    <div class="col-md-2">
                         <label for="db_password" class="form-label">Senha</label>
                         <input type="password" class="form-control" name="db_password" value="">
                     </div>

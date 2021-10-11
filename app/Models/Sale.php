@@ -14,4 +14,10 @@ class Sale extends Model
         # code...
         return $this->belongsTo(People::class, 'idClient', 'id');
     }
+
+    public function itens()
+    {
+        # code...
+        return $this->hasMany(SalesItem::class, 'idSale', 'id');
+    }
 }
