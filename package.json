@@ -26,6 +26,7 @@
     "dependencies": {
         "@chartisan/echarts": "^2.2.3",
         "echarts": "^4.9.0",
+        "fullcalendar": "^5.9.0",
         "inputmask": "^5.0.6",
         "jquery": "^3.6.0"
     }

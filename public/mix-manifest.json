@@ -6,6 +6,10 @@
     "/js/bootstrap.js": "/js/bootstrap.js",
     "/js/echarts.min.js": "/js/echarts.min.js",
     "/js/chartisan_echarts.js": "/js/chartisan_echarts.js",
+    "/js/fullcalendar/main.js": "/js/fullcalendar/main.js",
+    "/js/fullcalendar/manifest.js": "/js/fullcalendar/manifest.js",
     "/css/styles.css": "/css/styles.css",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/css/fullcalendar/main.css": "/css/fullcalendar/main.css",
+    "/js/fullcalendar/vendor.js": "/js/fullcalendar/vendor.js"
 }

@@ -94,4 +94,5 @@
                 <a class="btn btn-secondary" href="/finance/people">Cancelar</a>
             </div>
         </form>
+    </div>
     @endsection

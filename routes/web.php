@@ -4,11 +4,15 @@ use App\Charts\SalesChart;
 use App\Http\Controllers\Auth\Users;
 use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\BanksController;
+use App\Http\Controllers\CourseclassesController;
+use App\Http\Controllers\ClasslocalsController;
+use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PeriodsheetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\FinancePlanController;
 use App\Http\Controllers\PaymentMovesController;
@@ -57,6 +61,27 @@ Route::get('/dashboard_old', function () {
 
 Route::get('registers', [RegisterController::class, 'index'])->middleware('auth');
 
+Route::get('registers/classcourses', [CourseclassesController::class, 'index'])->middleware('auth');
+Route::get('registers/classcourses/create', [CourseclassesController::class, 'create'])->middleware('auth');
+Route::post('registers/classcourses/create', [CourseclassesController::class, 'store'])->middleware('auth');
+Route::get('registers/classcourses/{id}', [CourseclassesController::class, 'show'])->middleware('auth');
+Route::put('registers/classcourses/{id}', [CourseclassesController::class, 'update'])->middleware('auth');
+Route::delete('registers/classcourses/{id}', [CourseclassesController::class, 'destroy'])->middleware('auth');
+
+Route::get('registers/classlocals', [ClasslocalsController::class, 'index'])->middleware('auth');
+Route::get('registers/classlocals/create', [ClasslocalsController::class, 'create'])->middleware('auth');
+Route::get('registers/classlocals/{id}', [ClasslocalsController::class, 'show'])->middleware('auth');
+Route::put('registers/classlocals/{id}', [ClasslocalsController::class, 'update'])->middleware('auth');
+Route::delete('registers/classlocals/{id}', [ClasslocalsController::class, 'destroy'])->middleware('auth');
+Route::post('registers/classlocals/create', [ClasslocalsController::class, 'store'])->middleware('auth');
+
+Route::get('registers/courses', [CoursesController::class, 'index'])->middleware('auth');
+Route::get('registers/courses/create', [CoursesController::class, 'create'])->middleware('auth');
+Route::get('registers/courses/{id}', [CoursesController::class, 'show'])->middleware('auth');
+Route::put('registers/courses/{id}', [CoursesController::class, 'update'])->middleware('auth');
+Route::delete('registers/courses/{id}', [CoursesController::class, 'destroy'])->middleware('auth');
+Route::post('registers/courses/create', [CoursesController::class, 'store'])->middleware('auth');
+
 Route::get('/registers/products', [ProductsController::class, 'index'])->middleware('auth');
 Route::get('/registers/products/create', [ProductsController::class, 'create'])->middleware('auth');
 Route::post('/registers/products/create', [ProductsController::class, 'store'])->middleware('auth');
@@ -65,7 +90,17 @@ Route::put('/registers/products/{id}', [ProductsController::class, 'update'])->m
 Route::delete('/registers/products/{id}', [ProductsController::class, 'destroy'])->middleware('auth');
 
 Route::get('/schedule', [ScheduleController::class, 'index'])->middleware('auth');
+Route::get('/schedule/getSchedule', [ScheduleController::class, 'getSchedule'])->middleware('auth');
+Route::post('/schedule/setSchedule', [ScheduleController::class, 'setSchedule'])->middleware('auth');
+
 Route::get('/registers/users', [ScheduleController::class, 'index'])->middleware('auth');
+
+Route::get('/registers/companies', [CompaniesController::class, 'index'])->middleware('auth');
+Route::get('/registers/companies/create', [CompaniesController::class, 'create'])->middleware('auth');
+Route::post('/registers/companies/create', [CompaniesController::class, 'store'])->middleware('auth');
+Route::get('/registers/companies/{id}', [CompaniesController::class, 'show'])->middleware('auth');
+Route::put('/registers/companies/{id}', [CompaniesController::class, 'update'])->middleware('auth');
+Route::delete('/registers/companies/{id}', [CompaniesController::class, 'destroy'])->middleware('auth');
 
 Route::get('/registers/employee', [EmployeeController::class, 'index'])->middleware('auth');
 Route::get('/registers/employee/create', [EmployeeController::class, 'create'])->middleware('auth');
