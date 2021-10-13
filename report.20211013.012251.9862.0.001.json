@@ -1,0 +1,362 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20211013.012251.9862.0.001.json",
+    "dumpEventTime": "2021-10-13T01:22:51Z",
+    "dumpEventTimeStamp": "1634098971781",
+    "processId": 9862,
+    "cwd": "/var/www/html/rockingleses",
+    "commandLine": [
+      "node",
+      "/usr/local/bin/npx",
+      "webpack",
+      "--progress",
+      "--config=node_modules/laravel-mix/setup/webpack.config.js"
+    ],
+    "nodejsVersion": "v12.14.1",
+    "glibcVersionRuntime": "2.28",
+    "glibcVersionCompiler": "2.24",
+    "wordSize": 32,
+    "arch": "arm",
+    "platform": "linux",
+    "componentVersions": {
+      "node": "12.14.1",
+      "v8": "7.7.299.13-node.16",
+      "uv": "1.33.1",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.40.0",
+      "napi": "5",
+      "llhttp": "2.0.1",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1d",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019c",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.14.1/node-v12.14.1-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.14.1/node-v12.14.1.tar.gz"
+    },
+    "osName": "Linux",
+    "osRelease": "5.10.63-v7+",
+    "osVersion": "#1457 SMP Tue Sep 28 11:25:31 BST 2021",
+    "osMachine": "armv7l",
+    "cpus": [
+      {
+        "model": "ARMv7 Processor rev 4 (v7l)",
+        "speed": 1200,
+        "user": 8845000,
+        "nice": 1500,
+        "sys": 786700,
+        "idle": 60833000,
+        "irq": 0
+      },
+      {
+        "model": "ARMv7 Processor rev 4 (v7l)",
+        "speed": 1200,
+        "user": 9997100,
+        "nice": 2700,
+        "sys": 668300,
+        "idle": 60793000,
+        "irq": 0
+      },
+      {
+        "model": "ARMv7 Processor rev 4 (v7l)",
+        "speed": 1200,
+        "user": 10077500,
+        "nice": 1400,
+        "sys": 604300,
+        "idle": 60414700,
+        "irq": 0
+      },
+      {
+        "model": "ARMv7 Processor rev 4 (v7l)",
+        "speed": 1200,
+        "user": 10123500,
+        "nice": 2400,
+        "sys": 591400,
+        "idle": 61228700,
+        "irq": 0
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "eth0",
+        "internal": false,
+        "mac": "b8:27:eb:45:bc:18",
+        "address": "192.168.15.65",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "eth0",
+        "internal": false,
+        "mac": "b8:27:eb:45:bc:18",
+        "address": "2804:1b3:8402:6acf:b709:f4c3:ee8d:587a",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "eth0",
+        "internal": false,
+        "mac": "b8:27:eb:45:bc:18",
+        "address": "fe80::7f2d:f888:8c4b:cf1",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 2
+      }
+    ],
+    "host": "raspserver"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+  ],
+  "javascriptHeap": {
+    "totalMemory": 247844864,
+    "totalCommittedMemory": 246002036,
+    "usedMemory": 238161012,
+    "availableMemory": 7025304,
+    "memoryLimit": 248512512,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 22240,
+        "capacity": 262008,
+        "used": 22104,
+        "available": 239904
+      },
+      "new_space": {
+        "memorySize": 4194304,
+        "committedMemory": 3025828,
+        "capacity": 2096064,
+        "used": 207040,
+        "available": 1889024
+      },
+      "old_space": {
+        "memorySize": 194301952,
+        "committedMemory": 194088032,
+        "capacity": 194017496,
+        "used": 191884832,
+        "available": 2132664
+      },
+      "code_space": {
+        "memorySize": 2260992,
+        "committedMemory": 2040576,
+        "capacity": 1734080,
+        "used": 1734080,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 3674112,
+        "committedMemory": 3674000,
+        "capacity": 1365280,
+        "used": 1365280,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 42528768,
+        "committedMemory": 42528768,
+        "capacity": 42402012,
+        "used": 42402012,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 622592,
+        "committedMemory": 622592,
+        "capacity": 545664,
+        "used": 545664,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 2096064,
+        "used": 0,
+        "available": 2096064
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 648.819,
+    "kernelCpuSeconds": 9.61265,
+    "cpuConsumptionPercent": 190.298,
+    "maxRss": 583847936,
+    "pageFaults": {
+      "IORequired": 0,
+      "IONotRequired": 422934
+    },
+    "fsActivity": {
+      "reads": 15304,
+      "writes": 0
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": 165.361,
+    "kernelCpuSeconds": 3.82742,
+    "cpuConsumptionPercent": 48.8983,
+    "fsActivity": {
+      "reads": 10608,
+      "writes": 0
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "MAIL": "/var/mail/pi",
+    "USER": "pi",
+    "SSH_CLIENT": "192.168.15.8 63124 22",
+    "TEXTDOMAIN": "Linux-PAM",
+    "XDG_SESSION_TYPE": "tty",
+    "SHLVL": "1",
+    "HOME": "/home/pi",
+    "OLDPWD": "/home/pi",
+    "SSH_TTY": "/dev/pts/0",
+    "LOGNAME": "pi",
+    "_": "/usr/local/bin/npx",
+    "XDG_SESSION_CLASS": "user",
+    "TERM": "xterm-256color",
+    "XDG_SESSION_ID": "12",
+    "MIX_FILE": "webpack.mix",
+    "PATH": "/var/www/html/rockingleses/node_modules/.bin:/var/www/html/rockingleses/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games",
+    "XDG_RUNTIME_DIR": "/run/user/1000",
+    "LANG": "pt_BR.UTF-8",
+    "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:",
+    "SHELL": "/bin/bash",
+    "NO_AT_BRIDGE": "1",
+    "PWD": "/var/www/html/rockingleses",
+    "SSH_CONNECTION": "192.168.15.8 63124 192.168.15.65 22",
+    "NODE_ENV": "production",
+    "APP_NAME": "RockIngleses",
+    "APP_ENV": "local",
+    "APP_KEY": "base64:SMFV3GWnsdweGri/jZ7iJwrjBsLnSIq2Sl1PBYOuKX4=",
+    "APP_DEBUG": "true",
+    "APP_URL": "http://localhost",
+    "LOG_CHANNEL": "stack",
+    "LOG_LEVEL": "debug",
+    "DB_CONNECTION": "mysql",
+    "DB_HOST": "127.0.0.1",
+    "DB_PORT": "3306",
+    "DB_DATABASE": "rockingleses",
+    "DB_USERNAME": "rockuser",
+    "DB_PASSWORD": "tw34EMAtuEcuxPTp",
+    "BROADCAST_DRIVER": "log",
+    "CACHE_DRIVER": "file",
+    "FILESYSTEM_DRIVER": "local",
+    "QUEUE_CONNECTION": "sync",
+    "SESSION_DRIVER": "database",
+    "SESSION_LIFETIME": "120",
+    "MEMCACHED_HOST": "127.0.0.1",
+    "REDIS_HOST": "127.0.0.1",
+    "REDIS_PASSWORD": "null",
+    "REDIS_PORT": "6379",
+    "MAIL_MAILER": "smtp",
+    "MAIL_HOST": "smtp.emailzimbraonline.com",
+    "MAIL_PORT": "465",
+    "MAIL_USERNAME": "ingleses@rockfellerbrasil.com.br",
+    "MAIL_PASSWORD": "2&5qggMs",
+    "MAIL_ENCRYPTION": "SSL",
+    "MAIL_FROM_ADDRESS": "ingleses@rockfellerbrasil.com.br",
+    "MAIL_CC": "fernando.dbarcellos@gmail.com",
+    "MAIL_FROM_NAME": "RockIngleses",
+    "AWS_ACCESS_KEY_ID": "",
+    "AWS_SECRET_ACCESS_KEY": "",
+    "AWS_DEFAULT_REGION": "us-east-1",
+    "AWS_BUCKET": "",
+    "AWS_USE_PATH_STYLE_ENDPOINT": "false",
+    "PUSHER_APP_ID": "",
+    "PUSHER_APP_KEY": "",
+    "PUSHER_APP_SECRET": "",
+    "PUSHER_APP_CLUSTER": "mt1",
+    "MIX_PUSHER_APP_KEY": "",
+    "MIX_PUSHER_APP_CLUSTER": "mt1",
+    "TEAMS_MANAGER": "3",
+    "TEAMS_FINANCE": "4",
+    "TEAMS_TEACHER": "2",
+    "TEAMS_SALES": "5"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": 67108864,
+      "hard": 67108864
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 1048576,
+      "hard": 1048576
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 6865,
+      "hard": 6865
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "linux-vdso.so.1",
+    "/usr/lib/arm-linux-gnueabihf/libarmmem-v7l.so",
+    "/lib/arm-linux-gnueabihf/libdl.so.2",
+    "/lib/arm-linux-gnueabihf/libstdc++.so.6",
+    "/lib/arm-linux-gnueabihf/libm.so.6",
+    "/lib/arm-linux-gnueabihf/libgcc_s.so.1",
+    "/lib/arm-linux-gnueabihf/libpthread.so.0",
+    "/lib/arm-linux-gnueabihf/libc.so.6",
+    "/lib/ld-linux-armhf.so.3"
+  ]
+}
