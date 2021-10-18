@@ -55,6 +55,7 @@ Route::get('/periodsheet/{id}', [PeriodsheetController::class, 'showoneadjust'])
 Route::delete('/periodsheet/{id}', [PeriodsheetController::class, 'destroy'])->middleware('auth');
 Route::get('/manageperiod', [PeriodsheetController::class, 'shownewadjust'])->middleware('auth');
 Route::get('/mailable', [PeriodsheetController::class, 'mailable'])->middleware('auth');
+
 Route::get('/dashboard_old', function () {
     return view('dashboard_old');
 })->middleware('auth');
@@ -165,6 +166,8 @@ Route::get('/configs', [ConfigController::class, 'index'])->middleware('auth');
 Route::put('/configs', [ConfigController::class, 'update']);
 Route::get('/configs/checkip', [ConfigController::class, 'checkip']);
 
+Route::delete('/configs/backups', [ConfigController::class, 'destroybackups']);
+
 Route::get('/seed/country', [SeederController::class, 'seedcountry']);
 Route::get('/seed/state', [SeederController::class, 'seedstate']);
 Route::get('/seed/city', [SeederController::class, 'seedcity']);
@@ -173,5 +176,8 @@ Route::get('/seed/cfps_cst', [SeederController::class, 'seedcfpscst']);
 Route::get('/seed/transaction', [SeederController::class, 'seedtransaction']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    
+    return redirect('/');
+    
+    //return view('dashboard');
 })->name('dashboard');

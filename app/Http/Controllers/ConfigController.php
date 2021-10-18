@@ -58,6 +58,29 @@ class ConfigController extends Controller
         return view('configs.show', ['configs' => $configs, 'teams' => $teams]);
     }
 
+    public function listbackups()
+    {
+        # code...
+        $ds = DIRECTORY_SEPARATOR;
+        $path = storage_path() . $ds . 'backups' . $ds;
+
+        $directory = dir($path);
+        $files = [];
+
+        $i = 0;
+        while ($file = $directory->read()) {
+            # code...
+            if (mime_content_type($path . $ds . $file) != 'directory') {
+                $files[$i] =  $file;
+                $i++;
+            }
+        }
+
+        $directory->close();
+
+        return $files;
+    }
+
     public function update(Request $request)
     {
 

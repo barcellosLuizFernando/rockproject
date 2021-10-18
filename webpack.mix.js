@@ -20,14 +20,12 @@ mix
     .js('vendor/twbs/bootstrap/dist/js/bootstrap.bundle.js', 'public/js/bootstrap.js').sourceMaps()
     .js('node_modules/echarts/dist/echarts.min.js', 'public/js/echarts.min.js')
     .js('node_modules/@chartisan/echarts/dist/chartisan_echarts.js', 'public/js/chartisan_echarts.js')
-    //.js('node_modules/fullcalendar/main.js', 'public/js/fullcalendar/main.js')
     .js('node_modules/fullcalendar/locales-all.js', 'public/js/fullcalendar/locales-all.js')
     .postCss('node_modules/fullcalendar/main.css', 'public/css/fullcalendar/main.css')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
-    ])
-    ;
+    ]);
 
 mix.sass('resources/scss/styles.scss', 'public/css');
 
