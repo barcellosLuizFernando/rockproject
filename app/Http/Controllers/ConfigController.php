@@ -10,8 +10,10 @@ use Illuminate\Http\Request;
 
 use stdClass;
 use Illuminate\Support\Env;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class ConfigController extends Controller
 {
@@ -54,31 +56,55 @@ class ConfigController extends Controller
             $configs->externalip = '';
         }
 
+
+        $configs->backups = $this->listbackups();
+
         session(['page' => 'configs']);
         return view('configs.show', ['configs' => $configs, 'teams' => $teams]);
     }
 
-    public function listbackups()
+    public function dumpbackup()
+    {
+        # code...
+        Artisan::call('db:dump');
+
+        return redirect('/configs');
+    }
+
+    private function listbackups()
     {
         # code...
         $ds = DIRECTORY_SEPARATOR;
-        $path = storage_path() . $ds . 'backups' . $ds;
-
-        $directory = dir($path);
+        $path = storage_path() . $ds . 'app/public/backups' . $ds;
         $files = [];
 
-        $i = 0;
-        while ($file = $directory->read()) {
-            # code...
-            if (mime_content_type($path . $ds . $file) != 'directory') {
-                $files[$i] =  $file;
-                $i++;
+        try {
+            $directory = dir($path);
+
+            $i = 0;
+            while ($file = $directory->read()) {
+                # code...
+                if (mime_content_type($path . $ds . $file) != 'directory') {
+                    $files[$i] =  $file;
+                    $i++;
+                }
             }
+
+            $directory->close();
+        } catch (Exception $err) {
         }
 
-        $directory->close();
-
         return $files;
+    }
+
+    public function destroybackup($id)
+    {
+        # code...
+        $path = 'public/backups/' . $id;
+        //return $path;
+        Storage::delete([$path]);
+
+        return redirect('/configs');
     }
 
     public function update(Request $request)

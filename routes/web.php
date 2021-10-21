@@ -162,11 +162,12 @@ Route::get('/finance/payments', [PaymentsController::class, 'index'])->middlewar
 
 Route::post('/finance/payments/paybills', [PaymentMovesController::class, 'store'])->middleware('auth');
 
+Route::get('/configs/backups/dump', [ConfigController::class, 'dumpbackup'])->middleware('auth');
+Route::delete('/configs/backups/{id}', [ConfigController::class, 'destroybackup'])->middleware('auth');
 Route::get('/configs', [ConfigController::class, 'index'])->middleware('auth');
 Route::put('/configs', [ConfigController::class, 'update']);
 Route::get('/configs/checkip', [ConfigController::class, 'checkip']);
 
-Route::delete('/configs/backups', [ConfigController::class, 'destroybackups']);
 
 Route::get('/seed/country', [SeederController::class, 'seedcountry']);
 Route::get('/seed/state', [SeederController::class, 'seedstate']);

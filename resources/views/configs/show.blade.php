@@ -18,28 +18,33 @@
 
                     <div class="col-md-3">
                         <label for="app_name" class="form-label">Nome do aplicativo</label>
-                        <input type="text" class="form-control" name="app_name" value="{{ $configs->app_name }}" required>
+                        <input type="text" class="form-control" name="app_name" value="{{ $configs->app_name }}"
+                            required>
                     </div>
                     <div class="col-md-3">
                         <label for="app_debug" class="form-label">Modo debug</label>
                         <div class="form-control">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="app_debug" id="app_debug1" value="S" @if ($configs->app_debug == true) checked @endif>
+                                <input class="form-check-input" type="radio" name="app_debug" id="app_debug1" value="S"
+                                    @if ($configs->app_debug == true) checked @endif>
                                 <label class="form-check-label" for="transportticket1">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="app_debug" id="app_debug2" value="N" @if ($configs->app_debug == false) checked @endif>
+                                <input class="form-check-input" type="radio" name="app_debug" id="app_debug2" value="N"
+                                    @if ($configs->app_debug == false) checked @endif>
                                 <label class="form-check-label" for="app_debug2">Não</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label for="timezone" class="form-label">Horário global</label>
-                        <input type="text" class="form-control" name="timezone" value="{{ $configs->timezone }}" required>
+                        <input type="text" class="form-control" name="timezone" value="{{ $configs->timezone }}"
+                            required>
                     </div>
                     <div class="col-md-3">
                         <label for="timezone" class="form-label">IP Externo</label>
-                        <input type="text" class="form-control" name="timezone" value="{{ $configs->externalip }}" required>
+                        <input type="text" class="form-control" name="timezone" value="{{ $configs->externalip }}"
+                            required>
                     </div>
                 </div>
 
@@ -77,7 +82,8 @@
                     </div>
                     <div class="col-md-3">
                         <label for="teams_sales" class="form-label">Sales</label>
-                        <select class="form-control" name="teams_sales" id="teams_sales" aria-label="teams_sales" required>
+                        <select class="form-control" name="teams_sales" id="teams_sales" aria-label="teams_sales"
+                            required>
                             @foreach ($teams as $team)
                                 <option value="{{ $team->id }}" @if ($team->id == $configs->teams_sales) selected @endif>
                                     {{ $team->name }}</option>
@@ -92,11 +98,13 @@
                 <div class="row mb-3">
                     <div class="col-md-2">
                         <label for="db_host" class="form-label">Host</label>
-                        <input type="text" class="form-control" name="db_host" value="{{ $configs->db_host }}" required>
+                        <input type="text" class="form-control" name="db_host" value="{{ $configs->db_host }}"
+                            required>
                     </div>
                     <div class="col-md-2">
                         <label for="db_port" class="form-label">Porta</label>
-                        <input type="text" class="form-control" name="db_port" value="{{ $configs->db_port }}" required>
+                        <input type="text" class="form-control" name="db_port" value="{{ $configs->db_port }}"
+                            required>
                     </div>
                     <div class="col-md-2">
                         <label for="db_database" class="form-label">Database</label>
@@ -112,7 +120,46 @@
                         <label for="db_password" class="form-label">Senha</label>
                         <input type="password" class="form-control" name="db_password" value="">
                     </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+
+                            <label for="db_password" class="form-label">Backup</label>
+
+
+                            <a class="btn btn-secondary form-control" role="button" aria-pressed="true"
+                                href="/configs/backups/dump">Executar</a>
+
+                        </div>
+                    </div>
                 </div>
+
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Arquivo</th>
+                            <th scope="col">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($configs->backups as $item)
+                            <tr>
+                                <td>{{ $item }}</td>
+                                <td>
+                                    <a class="btn btn-success btn-sm"
+                                        href="/storage/backups/{{ $item }}">Download</a>
+                                    <form action="/configs/backups/{{ $item }}" class="d-inline"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i>
+                                            Excluir</button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
             <div class="col-12 g-3 mb-4 border p-3 shadow-hover">
                 <h5 class="card-title">Envio de emails</h5>
@@ -143,7 +190,8 @@
                     </div>
                     <div class="col-md-5 mb-3">
                         <label for="mail_cc" class="form-label">Cópia para</label>
-                        <input type="text" class="form-control" name="mail_cc" value="{{ $configs->mail_cc }}" required>
+                        <input type="text" class="form-control" name="mail_cc" value="{{ $configs->mail_cc }}"
+                            required>
                     </div>
                 </div>
 
@@ -151,21 +199,21 @@
 
             <div class="col-12 g-3 mb-4 border p-3 shadow-hover">
                 <h5 class="card-title">Popular tabelas</h5>
-                
 
-                    <a class="btn btn-primary" href="/seed/country">Países</a>
-                    <a class="btn btn-primary" href="/seed/state">Estados</a>
-                    <a class="btn btn-primary" href="/seed/city">Cidades</a>
-                    <a class="btn btn-primary" href="/seed/cnae">CNAE</a>
-                    <a class="btn btn-primary" href="/seed/cfps_cst">CFPS x CST</a>
-                    <a class="btn btn-primary" href="/seed/transaction">Transações</a>
-                
+
+                <a class="btn btn-primary" href="/seed/country">Países</a>
+                <a class="btn btn-primary" href="/seed/state">Estados</a>
+                <a class="btn btn-primary" href="/seed/city">Cidades</a>
+                <a class="btn btn-primary" href="/seed/cnae">CNAE</a>
+                <a class="btn btn-primary" href="/seed/cfps_cst">CFPS x CST</a>
+                <a class="btn btn-primary" href="/seed/transaction">Transações</a>
+
             </div>
 
             <div class="col-12 mb-5">
                 <!--
-                    <button class="btn btn-primary" type="submit">Gravar configurações</button>
-                    -->
+                            <button class="btn btn-primary" type="submit">Gravar configurações</button>
+                            -->
                 <a class="btn btn-secondary" href="/">Cancelar</a>
             </div>
 
