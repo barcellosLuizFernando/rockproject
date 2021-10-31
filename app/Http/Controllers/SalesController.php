@@ -15,6 +15,7 @@ use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class SalesController extends Controller
 {
@@ -22,7 +23,9 @@ class SalesController extends Controller
     public function index()
     {
         # code...
-        $sales = Sale::orderBy('date', 'desc')->get();
+        $sales = Sale::orderBy('date', 'desc')
+            ->orderBy('docnumber', 'desc')
+            ->get();
         $sales->load('client');
 
         foreach ($sales as $sale) {
@@ -34,6 +37,97 @@ class SalesController extends Controller
         //return $sales;
 
         return view('finance.sales.show', ['sales' => $sales]);
+    }
+
+    public function update($id)
+    {
+        # code...
+        $sale = Sale::findOrFail($id);
+        if($sale->outlier) {
+            $sale->outlier = false;
+        } else {
+            $sale->outlier = true;
+        }
+        $sale->save();
+
+        return true;    
+    }
+
+    public function dbavgticket()
+    {
+        # code...
+
+        $data['months'] = [];
+
+
+        //$sales = Sale::all([DB::raw("LAST_DAY(date) as cmp")]);
+        $sales = DB::table('sales')
+            ->distinct()
+            ->select(DB::raw("LAST_DAY(date) as cmp"))
+            ->orderByDesc('date')
+            ->get();
+
+        $i = 0;
+        foreach ($sales as $key => $cmp) {
+            # code...
+            setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+            date_default_timezone_set('America/Sao_Paulo');
+            $date = getdate(strtotime($cmp->cmp));
+            $date['name'] = strftime('%B/%Y', strtotime($cmp->cmp));;
+            $date['lastday'] = $cmp->cmp;
+            array_push($data['months'], $date);
+
+            $i++;
+            if ($i == 4) break;
+        }
+
+        $idProduct = 2;
+        
+        foreach ($data['months'] as $dkey => $value) {
+            # code...
+            $qtd = 0;
+            $qtd_o = 0;
+            $val = 0.00;
+            $val_o = 0.00;
+            $sales = Sale::with('itens')
+                ->whereYear('date', $value['year'])
+                ->whereMonth('date', $value['mon'])
+                ->get();
+            
+            foreach ($sales as $key => $sale) {
+                # code...
+                foreach ($sale->itens as $key => $item) {
+                    # code...
+
+                    if($item->idProduct == $idProduct) {
+
+                        $qtd_o += $item->quantity;
+                        $val_o += $item->value;
+                        
+                        if($sale->outlier == false){
+                            $qtd += $item->quantity;
+                            $val += $item->value;
+                        }
+
+                    }
+                    
+                }
+            }
+
+            $val_o = $val_o / $qtd_o;
+            $val = $val / $qtd;
+
+            
+            $data['months'][$dkey]['qtd'] = $qtd;
+            $data['months'][$dkey]['qtd_o'] = $qtd_o;
+            $data['months'][$dkey]['val'] =  number_format($val, 2, ',', '.');
+            $data['months'][$dkey]['val_o'] = number_format($val_o, 2, ',', '.');;
+
+            
+        }
+
+
+        return $data;
     }
 
     public function create(Request $request)

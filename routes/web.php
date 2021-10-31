@@ -153,12 +153,19 @@ Route::delete('/finance/purchases/{id}', [PurchaseController::class, 'destroy'])
 Route::post('/finance/purchases/create', [PurchaseController::class, 'store'])->middleware('auth');
 
 Route::get('/finance/sales', [SalesController::class, 'index'])->middleware('auth');
+Route::put('/finance/sales/{id}', [SalesController::class, 'update'])->middleware('auth');
+Route::get('/finance/sales/avgticket', [SalesController::class, 'dbavgticket'])->middleware('auth');
 Route::get('/finance/sales/report', [SalesController::class, 'show'])->middleware('auth');
 Route::get('/finance/sales/report/pdf', [SalesController::class, 'getPDF'])->middleware('auth');
 Route::post('/finance/sales/importxml', [SalesController::class, 'create'])->middleware('auth');
 
 
 Route::get('/finance/payments', [PaymentsController::class, 'index'])->middleware('auth');
+Route::get('/finance/payments/create', [PaymentsController::class, 'create'])->middleware('auth');
+Route::get('/finance/payments/{id}', [PaymentsController::class, 'show'])->middleware('auth');
+Route::put('/finance/payments/{id}', [PaymentsController::class, 'update'])->middleware('auth');
+Route::delete('/finance/payments/{id}', [PaymentsController::class, 'destroy'])->middleware('auth');
+Route::post('/finance/payments/create', [PaymentsController::class, 'store'])->middleware('auth');
 
 Route::post('/finance/payments/paybills', [PaymentMovesController::class, 'store'])->middleware('auth');
 

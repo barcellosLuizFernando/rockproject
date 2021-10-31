@@ -1,15 +1,10 @@
 /* FONTS */
-@import url("https://fonts.googleapis.com/css?family=Lato|Roboto+Slab:100,300,400,700");
+@import '../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '../../node_modules/@fortawesome/fontawesome-free/scss/regular.scss';
+@import '../../node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
 
 /* Components */
-@import "../../vendor/twbs/bootstrap/scss/bootstrap";
-@import "../../vendor/components/font-awesome/scss/fontawesome.scss";
-@import "../../vendor/components/font-awesome/scss/brands.scss";
-@import "../../vendor/components/font-awesome/scss/regular.scss";
-@import "../../vendor/components/font-awesome/scss/solid.scss";
-@import "../../vendor/components/font-awesome/scss/v4-shims.scss";
-
-
+/*@import "../../vendor/twbs/bootstrap/scss/bootstrap";*/
 
 main {
     display: flex;

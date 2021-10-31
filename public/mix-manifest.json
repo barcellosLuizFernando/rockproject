@@ -1,13 +1,9 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/js/jQuery.js": "/js/jQuery.js",
-    "/js/inputmask.js": "/js/inputmask.js",
-    "/js/inputmask.binding.js": "/js/inputmask.binding.js",
-    "/js/bootstrap.js": "/js/bootstrap.js",
-    "/js/echarts.min.js": "/js/echarts.min.js",
-    "/js/chartisan_echarts.js": "/js/chartisan_echarts.js",
-    "/js/fullcalendar/locales-all.js": "/js/fullcalendar/locales-all.js",
-    "/css/styles.css": "/css/styles.css",
-    "/css/app.css": "/css/app.css",
-    "/css/fullcalendar/main.css": "/css/fullcalendar/main.css"
+    "/js/app.js": "/js/app.js?id=d68c25764c823c16546b",
+    "/js/echarts.js": "/js/echarts.js?id=6edfe774432182750b20",
+    "/js/chartisan_echarts.js": "/js/chartisan_echarts.js?id=ead18f07d1ac9dbf7e10",
+    "/js/inputmask/inputmask.js": "/js/inputmask/inputmask.js?id=7c7bc99546729408f4b7",
+    "/js/inputmask/inputmask.binding.js": "/js/inputmask/inputmask.binding.js?id=303566731a580bfd481e",
+    "/css/app.css": "/css/app.css?id=61381f410f3d7e69bbc7",
+    "/css/styles.css": "/css/styles.css?id=c2b08ef9d27be034c320"
 }

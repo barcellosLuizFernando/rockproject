@@ -84,7 +84,14 @@
                                 id="checkbills"></td>
                         <td>{{ date('d/m/Y', strtotime($payment->duedate)) }}</td>
                         <td>{{ $payment->supplier->name }}</td>
-                        <td>{{ $payment->filename }}</td>
+                        <td>
+                            @if ($payment->filename <> '')
+                                <a role="button" href=" {{ '/storage/payments/' . $payment->filename }}" class="btn btn-secondary btn-sm"><i
+                                        class="fas fa-external-link-alt"></i> Documento</a>
+                            @else
+                                
+                            @endif
+                        </td>
                         <td>{{ $payment->status }}</td>
                         <td class="text-right">{{ number_format($payment->value, 2, ',', '.') }}</td>
                         <td class="text-right">{{ number_format($payment->balance, 2, ',', '.') }}</td>
@@ -638,7 +645,7 @@
 
 
                 tableDestiny.rows[i].cells[8].getElementsByTagName('input')[0].value = (lineTotal + '').replaceAll('.',
-                ',');
+                    ',');
 
             }
 

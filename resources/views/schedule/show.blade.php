@@ -2,8 +2,7 @@
 
 @section('headscript')
 
-    <link href='/css/fullcalendar/main.css' rel='stylesheet' />
-    <script src='/js/fullcalendar/main.js'></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 

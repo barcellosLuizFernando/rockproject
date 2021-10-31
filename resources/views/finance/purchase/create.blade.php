@@ -53,7 +53,7 @@
                     <select name="transaction" id="transaction" class="form-select" aria-label="Default select example"
                         required>
                         @foreach ($transactions as $transaction)
-                            <option value="{{ $transaction->id }}" @if ($transaction->id == $purchase->idTransaction) @endif>
+                            <option value="{{ $transaction->id }}" @if ($transaction->id == $purchase->idTransaction) selected @endif>
                                 {{ $transaction->description }}</option>
                         @endforeach
                     </select>

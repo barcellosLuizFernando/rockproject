@@ -28,6 +28,7 @@
                         <th scope="col">Documento</th>
                         <th scope="col">Cliente</th>
                         <th scope="col">Valor</th>
+                        <th scope="col">Outlier</th>
                         <th scope="col">XML</th>
                     </tr>
 
@@ -43,18 +44,35 @@
                             <td>{{ $item->client->name }}</td>
                             <td>{{ number_format($item->value, 2, ',', '.') }}</td>
                             <td>
-                                @if ($item->file != null)
-                                    <a role="button" href=" {{ $item->file }}" class="btn btn-secondary btn-sm"
-                                        target="_blank"><i class="fas fa-cloud-download-alt"></i> Download</a>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="cbOutlier" name="cbOutlier"
+                                        onclick="setSelected({{$item->id}});"
+                                        @if ($item->outlier) checked @endif >
+    </div>
+    </td>
+    <td>
+        @if ($item->file != null)
+            <a role="button" href=" {{ $item->file }}" class="btn btn-secondary btn-sm" target="_blank"><i
+                    class="fas fa-cloud-download-alt"></i> Download</a>
+        @endif
+    </td>
+    </tr>
+    @endforeach
 
 
-        </form>
+    </form>
 
 
     </div>
 
+@endsection
+
+@section('bodyscript')
+
+    <script>
+        function setSelected(id){
+            axios.put('/finance/sales/'+id);
+        }
+    </script>
+    
 @endsection

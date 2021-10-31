@@ -15,15 +15,22 @@
     -->
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/styles.css') }}">
+    
     <!--
         <link rel="stylesheet" href="/bootstrap/vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="/fontawesome/vendor/components/font-awesome/css/all.min.css">
     -->
-    <link rel="stylesheet" href="/css/styles.css">
+    
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
-
+    <script src="{{ mix('/js/echarts.js')}}"></script>
+    <script src="{{ mix('/js/chartisan_echarts.js')}}"></script>
+    <script src="/js/vue/vue.js"></script>
+    <script src="{{ mix('/js/inputmask/inputmask.js')}}"></script>
+    <script src="{{ mix('/js/inputmask/inputmask.binding.js')}}"></script>
+    <script src="/js/fullcalendar/main.js"></script>
     @yield('headscript')
 </head>
 
@@ -102,17 +109,7 @@
 
         @yield('content')
 
-    </main>
-
-
-
-    <script src="/js/jQuery.js"></script>
-    <script src="/js/inputmask.js"></script>
-    <script src="/js/inputmask.binding.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/echarts.min.js"></script>
-    <script src="/js/chartisan_echarts.js"></script>
-    
+    </main>    
 
     @yield('bodyscript')
 </body>
