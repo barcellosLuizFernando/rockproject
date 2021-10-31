@@ -27,7 +27,7 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
     <script src="{{ mix('/js/echarts.js')}}"></script>
     <script src="{{ mix('/js/chartisan_echarts.js')}}"></script>
-    <script src="/js/vue/vue.js"></script>
+    <script src="/js/vue/vue.min.js"></script>
     <script src="{{ mix('/js/inputmask/inputmask.js')}}"></script>
     <script src="{{ mix('/js/inputmask/inputmask.binding.js')}}"></script>
     <script src="/js/fullcalendar/main.js"></script>
