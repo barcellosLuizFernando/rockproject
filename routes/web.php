@@ -4,6 +4,7 @@ use App\Charts\SalesChart;
 use App\Http\Controllers\Auth\Users;
 use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\BanksController;
+use App\Http\Controllers\BankStatementController;
 use App\Http\Controllers\CourseclassesController;
 use App\Http\Controllers\ClasslocalsController;
 use App\Http\Controllers\CompaniesController;
@@ -20,11 +21,14 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReceivableController;
+use App\Http\Controllers\ReceivableMovesController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SeederController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TreasuryController;
 use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
 
@@ -152,12 +156,28 @@ Route::put('/finance/purchases/{id}', [PurchaseController::class, 'update'])->mi
 Route::delete('/finance/purchases/{id}', [PurchaseController::class, 'destroy'])->middleware('auth');
 Route::post('/finance/purchases/create', [PurchaseController::class, 'store'])->middleware('auth');
 
+Route::get('/finance/receivables', [ReceivableController::class, 'index'])->middleware('auth');
+Route::get('/finance/receivables/create', [ReceivableController::class, 'create'])->middleware('auth');
+Route::post('/finance/receivables/create', [ReceivableController::class, 'store'])->middleware('auth');
+Route::get('/finance/receivables/{id}', [ReceivableController::class, 'show'])->middleware('auth');
+Route::put('/finance/receivables/{id}', [ReceivableController::class, 'update'])->middleware('auth');
+Route::delete('/finance/receivables/{id}', [ReceivableController::class, 'destroy'])->middleware('auth');
+Route::post('/finance/receivables/paybills', [ReceivableMovesController::class, 'store'])->middleware('auth');
+
 Route::get('/finance/sales', [SalesController::class, 'index'])->middleware('auth');
 Route::put('/finance/sales/{id}', [SalesController::class, 'update'])->middleware('auth');
 Route::get('/finance/sales/avgticket', [SalesController::class, 'dbavgticket'])->middleware('auth');
 Route::get('/finance/sales/report', [SalesController::class, 'show'])->middleware('auth');
 Route::get('/finance/sales/report/pdf', [SalesController::class, 'getPDF'])->middleware('auth');
 Route::post('/finance/sales/importxml', [SalesController::class, 'create'])->middleware('auth');
+
+Route::get('/finance/treasury/bankstatement', [BankStatementController::class, 'index'])->middleware('auth');
+Route::post('/finance/treasury/bankstatement', [BankStatementController::class, 'store'])->middleware('auth');
+Route::get('/finance/treasury', [TreasuryController::class, 'index'])->middleware('auth');
+Route::get('/finance/treasury/{id}', [TreasuryController::class, 'show'])->middleware('auth');
+Route::get('/finance/treasury/create/{id}', [TreasuryController::class, 'create'])->middleware('auth');
+Route::post('/finance/treasury/create/{id}', [TreasuryController::class, 'store'])->middleware('auth');
+Route::delete('/finance/treasury/{id}', [TreasuryController::class, 'destroy'])->middleware('auth');
 
 
 Route::get('/finance/payments', [PaymentsController::class, 'index'])->middleware('auth');

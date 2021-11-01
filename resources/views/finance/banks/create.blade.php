@@ -6,7 +6,7 @@
 
         <h1 class="display-6 mb-5"> Cadastro de Instituções Bancárias</h1>
 
-        <form class="" method="POST" autocomplete="off">
+        <form class="" method="POST" autocomplete="off" enctype="multipart/form-data">
             @csrf
             @if (isset($bank->id))
                 @method('PUT')
@@ -28,6 +28,10 @@
                 <div class="col-md-9">
                     <label for="site" class="form-label">Site</label>
                     <input type="text" class="form-control" name="site" value="{{ $bank->site }}">
+                </div>
+                <div class="col-md-12">
+                    <label for="formFile" class="form-label">Logo</label>
+                    <input class="form-control" type="file" id="formFile" name="formFile">
                 </div>
             </div>
 

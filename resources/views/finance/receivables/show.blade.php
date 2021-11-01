@@ -4,7 +4,7 @@
 
     <div class="container">
 
-        <h1 class="display-6 mb-5"> Cadastro de Contas a Pagar</h1>
+        <h1 class="display-6 mb-5"> Cadastro de Contas a Receber</h1>
 
         <form method="POST">
             @csrf
@@ -20,11 +20,11 @@
                     <input type="date" class="form-control" name="enddate">
                 </div>
                 <div class="col-md-4">
-                    <label for="supplier" class="form-label">Fornecedor</label>
-                    <select name="supplier" id="supplier" class="form-select" aria-label="Default select example">
+                    <label for="supplier" class="form-label">Cliente</label>
+                    <select name="client" id="supplier" class="form-select" aria-label="Default select example">
                         <option></option>
-                        @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -50,11 +50,11 @@
 
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#paymentModal" class="btn btn-success me-md-2"
+            <button type="button" data-bs-toggle="modal" data-bs-target="#receivableModal" class="btn btn-success me-md-2"
                 onclick="getBills();">
-                <i class="fas fa-money-check-alt"></i> Pagar
+                <i class="fas fa-money-check-alt"></i> Receber
                 Título</button>
-            <a href="/finance/payments/create" class="btn btn-primary me-md-2" role="button"><i
+            <a href="/finance/receivables/create" class="btn btn-primary me-md-2" role="button"><i
                     class="far fa-plus-square"></i> Novo Título</a>
         </div>
 
@@ -65,8 +65,7 @@
                     <th colspan=1 scope="col">#</th>
                     <th scope="col">Check</th>
                     <th scope="col">Data</th>
-                    <th scope="col">Fornecedor</th>
-                    <th scope="col">Arquivo</th>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Status</th>
                     <th scope="col">Valor</th>
                     <th scope="col">Saldo</th>
@@ -77,37 +76,23 @@
             </thead>
 
             <tbody>
-                @foreach ($payments as $payment)
+                @foreach ($receivables as $item)
                     <tr>
-                        <th scope="row">{{ $payment->id }}</th>
-                        <td><input type="checkbox" class="form-check-input" value="{{ $payment->id }}" name="checkbills[]"
+                        <th scope="row">{{ $item->id }}</th>
+                        <td><input type="checkbox" class="form-check-input" value="{{ $item->id }}" name="checkbills[]"
                                 id="checkbills"></td>
-                        <td>{{ date('d/m/Y', strtotime($payment->duedate)) }}</td>
-                        <td>{{ $payment->supplier->name }}</td>
-                        <td>
-                            @if ($payment->filename <> '')
-                                <a role="button" href=" {{ '/storage/payments/' . $payment->filename }}" class="btn btn-secondary btn-sm"><i
-                                        class="fas fa-external-link-alt"></i> Documento</a>
-                            @else
-                                
-                            @endif
-                        </td>
-                        <td>{{ $payment->status }}</td>
-                        <td class="text-right">{{ number_format($payment->value, 2, ',', '.') }}</td>
-                        <td class="text-right">{{ number_format($payment->balance, 2, ',', '.') }}</td>
-                        <td>
-                            @if (isset($payment->originurl))
-                                <a role="button" href=" {{ $payment->originurl }}" class="btn btn-secondary btn-sm"><i
-                                        class="fas fa-external-link-alt"></i> {{ $payment->origin }}</a>
-                            @else
-                                {{ $payment->origin }}
-                            @endif
-                        </td>
-                        <td><a href="/finance/payments/{{ $payment->id }}" class="btn btn-secondary btn-sm"
+                        <td>{{ date('d/m/Y', strtotime($item->duedate)) }}</td>
+                        <td>{{ $item->client->name }}</td>
+                        <td>{{ $item->status }}</td>
+                        <td>{{ number_format($item->value, 2, ',', '.') }}</td>
+                        <td>{{ number_format($item->balance, 2, ',', '.') }}</td>
+                        <td>{{ $item->origin }}</td>
+                        <td><a href="/finance/receivables/{{ $item->id }}" class="btn btn-secondary btn-sm"
                                 role="button"><i class="far fa-edit"></i>
                                 Editar</a>
-                            @if (!isset($payment->originurl))
-                                <form action="/finance/payments/{{ $payment->id }}" class="d-inline" method="POST">
+                            @if ($item->origin != 'VEN')
+                                <form action="/finance/receivables/{{ $item->id }}" class="d-inline"
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger btn-sm" type="submit"><i class="far fa-trash-alt"></i>
@@ -117,30 +102,27 @@
                         </td>
 
                     </tr>
-
                 @endforeach
             </tbody>
         </table>
-
     </div>
-
     <!-- Modal -->
-    <div class="modal fade" id="paymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="receivableModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="receivableModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="paymentModalLabel">Baixa de títulos</h5>
+                    <h5 class="modal-title" id="receivableModalLabel">Baixa de títulos</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="/finance/payments/paybills" method="POST">
+                <form action="/finance/receivables/paybills" method="POST">
                     @csrf
                     <div class="modal-body">
                         <table class="table table-hover" id="paymenttable">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Fornecedor</th>
+                                    <th scope="col">Cliente</th>
                                     <th scope="col">Valor original</th>
                                     <th scope="col">Saldo</th>
                                     <th scope="col">Principal</th>
@@ -185,9 +167,11 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('bodyscript')
+
     <script>
         /** return void */
 
@@ -246,7 +230,7 @@
                     newCell.setAttribute('class', 'text-right');
 
                     // Append a input node to the cell
-                    var value = tableOrigin.rows[i].cells[6].innerHTML;
+                    var value = tableOrigin.rows[i].cells[5].innerHTML;
                     var newNode = document.createTextNode(value);
                     newCell.appendChild(newNode);
 
@@ -263,8 +247,8 @@
                     newCell.setAttribute('class', 'text-right');
 
                     // Append a input node to the cell
-                    var value = tableOrigin.rows[i].cells[7].innerHTML;
-                    var newNode = document.createTextNode(tableOrigin.rows[i].cells[7].innerHTML);
+                    var value = tableOrigin.rows[i].cells[6].innerHTML;
+                    var newNode = document.createTextNode(tableOrigin.rows[i].cells[6].innerHTML);
                     newCell.appendChild(newNode);
 
 

@@ -40,6 +40,8 @@
                         <option value="AD" @if ($transaction->type == 'AD') selected @endif>Adiantamento</option>
                         <option value="CR" @if ($transaction->type == 'CR') selected @endif>Crédito</option>
                         <option value="DB" @if ($transaction->type == 'DB') selected @endif>Débito</option>
+                        <option value="TC" @if ($transaction->type == 'TC') selected @endif>Transferência - Crédito</option>
+                        <option value="TD" @if ($transaction->type == 'TD') selected @endif>Transferência - Débito</option>
                     </select>
                 </div>
             </div>
