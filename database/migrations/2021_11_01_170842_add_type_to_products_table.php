@@ -15,7 +15,7 @@ class AddTypeToProductsTable extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             //
-            $table->foreignId('idProductFamily')->default(1)->constrained('product_families');
+            $table->foreignId('idProductFamily')->after('description')->default(1)->constrained('product_families');
         });
     }
 
